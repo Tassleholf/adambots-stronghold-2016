@@ -9,3 +9,5 @@ sysProps.xml
 *.png
 
 build.properties
+
+*.properties
