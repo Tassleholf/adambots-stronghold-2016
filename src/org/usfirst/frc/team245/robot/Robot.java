@@ -74,12 +74,19 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		autonomousCommand = (Command) chooser.getSelected();
 		Actuators.teleopInit();
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
+		
+		 String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
+		 switch(autoSelected) {
+		 	case "My Auto": 
+		 		//autonomousCommand = new MyAutoCommand(); 
+		 		break;
+		 		case "Default Auto":
+		 			
+		 		default:
+		 			//autonomousCommand = new ExampleCommand(); 
+		 			break;
+		}
+		 
 
 		// schedule the autonomous command (example)
 		if (autonomousCommand != null)
@@ -103,12 +110,11 @@ public class Robot extends IterativeRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-//		if (autonomousCommand != null)
-//			autonomousCommand.cancel();
+		if (autonomousCommand != null)
+			autonomousCommand.cancel();
 		//Arm.init();
 		pastShift = false;
 		
-		//TODO:TEST CODE
 
 		 	
 		 Actuators.teleopInit();
@@ -123,6 +129,7 @@ public class Robot extends IterativeRobot {
 			
 		
 		Drive.drive(Gamepad.primary.getTriggers(), Gamepad.primary.getLeftX());
+		
 		if(Gamepad.primary.getLB() && pastShift == false){
 			Drive.shift();
 			pastShift = Gamepad.primary.getLB();
@@ -130,7 +137,7 @@ public class Robot extends IterativeRobot {
 			pastShift = Gamepad.primary.getLB();
 		}
 		
-		//TODO: Check joystick mapping
+//		Shooter.shoot(Gamepad.primary.getRB()); //TODO: Needs to be tested
 //		Scheduler.getInstance().run();
 //TODO: TEST ARM CODE
 //		Arm.moveArm(Gamepad.secondary.getRightY());

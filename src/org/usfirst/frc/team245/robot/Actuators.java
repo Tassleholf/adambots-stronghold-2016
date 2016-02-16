@@ -75,7 +75,6 @@ public class Actuators {
 	 * Initializes all actuators
 	 */
 	public static void init() {
-		// TODO: Change ID's
 		// Motors
 		rightDriveMotor = new CANTalon(2);
 		rightDriveMotor = initCANTalon(rightDriveMotor, FeedbackDevice.QuadEncoder, RIGHT_DRIVE_REVERSE_SENSOR, 

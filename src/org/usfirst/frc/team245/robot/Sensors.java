@@ -11,8 +11,6 @@ import edu.wpi.first.wpilibj.Encoder;
  */
 public class Sensors {
 	// Digital
-	private static Encoder driveEncoderLeft;
-	private static Encoder driveEncoderRight;
 	private static Encoder winchEncoder;
 	private static DigitalInput intakeArmPhotoEye;
 	private static DigitalInput boulderCanLaunchPhotoEye;
@@ -30,8 +28,6 @@ public class Sensors {
 	 */
 	public static void init() {
 		// Digital
-		driveEncoderLeft = new Encoder(0, 0);
-		driveEncoderRight = new Encoder(0, 0);
 		winchEncoder = new Encoder(0, 0);
 		intakeArmPhotoEye = new DigitalInput(0);
 		boulderCanLaunchPhotoEye = new DigitalInput(0);
@@ -56,18 +52,6 @@ public class Sensors {
 		return armMinLimitSwitch;
 	}
 
-	/**
-	 * @return the driveEncoderLeft
-	 */
-	public static Encoder getDriveEncoderLeft() {
-		return driveEncoderLeft;
-	}
-	/**
-	 * @return the driveEncoderRight
-	 */
-	public static Encoder getDriveEncoderRight() {
-		return driveEncoderRight;
-	}
 	/**
 	 * @return the winchEncoder
 	 */
