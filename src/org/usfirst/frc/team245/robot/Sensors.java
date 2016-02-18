@@ -93,9 +93,9 @@ public class Sensors {
 	public static AnalogGyro getRobotGyro() {
 		return robotGyro;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return the arm angle using the string pot
 	 */
 	public static double getStringPotArmAngle() {

@@ -1,48 +1,43 @@
 package com.github.adambots.stronghold2016.auton;
 
+import org.usfirst.frc.team245.robot.Actuators;
 import org.usfirst.frc.team245.robot.Sensors;
 
 import com.github.adambots.stronghold2016.drive.Drive;
 
 public class left {
-	static double turnamount = 0, driveDistance =0,finishDistance = 0;
-	boolean turned, inPosition, done, turned2;
+	static double turnamountL = 0,turnamountR = 0, driveDistance =0,finishDistance = 0;
+	double turned;
+	double inPosition;
+	boolean done;
+	double turned2;
 	public left(){
-		turned = false;
-		inPosition = false;
-		done = false;
-		turned2 = false;
 	}
 	public void go(){
-		Sensors.getDriveEncoderLeft().reset();
-		Sensors.getDriveEncoderRight().reset();
-		if(!turned)
-		Drive.drive(0, -1);
-		if(Sensors.getDriveEncoderLeft().getDistance()== turnamount){
-			turned = true;
-			Sensors.getDriveEncoderLeft().reset();
-			Sensors.getDriveEncoderRight().reset();
+			turned  = Actuators.getLeftDriveMotor().getError();
+			inPosition  = Actuators.getLeftDriveMotor().getError();
+			turned2  = Actuators.getLeftDriveMotor().getError();
+			turned  = Actuators.getLeftDriveMotor().getError();
+			if (Math.abs(turned) < 100)
+				Drive.drive(Actuators.STOP_MOTOR);
+			else{
+				Drive.driveWithPID( -turnamountL, turnamountR);
+			}	
+			if (Math.abs(inPosition) > 100 && Math.abs(turned) < 100)
+				Drive.driveWithPID(driveDistance, driveDistance);
+			else{
+				Drive.drive(Actuators.STOP_MOTOR);
+			}
+
+			if (Math.abs(inPosition) < 100 && Math.abs(turned2) > 100)
+				Drive.driveWithPID(turnamountL, -turnamountR);
+			else{
+				Drive.drive(Actuators.STOP_MOTOR);
+			}
+			if (Math.abs(inPosition) < 100 && Math.abs(turned2) < 100)
+				Drive.driveWithPID(finishDistance, finishDistance);
+			else{
+				Drive.drive(Actuators.STOP_MOTOR);
+			}
 		}
-		if(!inPosition&& turned)
-		Drive.drive(1);
-		if(Sensors.getDriveEncoderRight().getDistance() == driveDistance){
-			inPosition = true;
-			Sensors.getDriveEncoderLeft().reset();
-			Sensors.getDriveEncoderRight().reset();
-		}
-		if(inPosition && !turned2)
-		Drive.drive(0, 1);
-		if(Sensors.getDriveEncoderRight().getDistance() == turnamount){
-			turned2 = true;
-			Sensors.getDriveEncoderLeft().reset();
-			Sensors.getDriveEncoderRight().reset();
-		}
-		if(turned2 && !done)
-		Drive.drive(1);
-		if(Sensors.getDriveEncoderRight().getDistance() == finishDistance){
-			done = true;
-		Sensors.getDriveEncoderLeft().reset();
-		Sensors.getDriveEncoderRight().reset();
-	}
-}
 }

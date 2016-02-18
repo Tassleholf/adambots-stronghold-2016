@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutonMain {
+
+	
 	private static final float NOMINAL_REVERSE_VOLTAGE = -0f;
 	private static final float NOMINAL_FORWARD_VOLTAGE = +0f;
 	private static final int ACCEPTABLE_ERROR = 0;
@@ -32,9 +34,19 @@ public class AutonMain {
 		
 		
 	}
-	
+	/**
+	 * 
+	 * @param dBCI  array of chars from the drive station telling what category of barrier is in what spot on the field this is for auton barrier class
+	 * @param dBCNI tells which number of the category is in that position for auton barrier class
+	 * @param cPN current position after the positioning code is done for auton barrier class
+	 */
+	public static void go(char[] dBCI, int[] dBCNI,int cPN, int start ,int end){
+		autonPosition position = new autonPosition(start,end);
+		position.autonType();
+		Auton_Barrier.autonBarrierGo(dBCI, dBCNI, cPN);
+	}
 	public static void test(){
-		SmartDashboard.putNumber("LEFT_ERROR", Actuators.getLeftDriveMotor().getError());
+		/*SmartDashboard.putNumber("LEFT_ERROR", Actuators.getLeftDriveMotor().getError());
 		SmartDashboard.putNumber("RIGHT_ERROR", Actuators.getRightDriveMotor().getError());
 		Actuators.getLeftDriveMotor().changeControlMode(TalonControlMode.Position);
 		final int testTarget = 1;
@@ -44,6 +56,8 @@ public class AutonMain {
 		Actuators.getRightDriveMotor().changeControlMode(TalonControlMode.Position);
 		Actuators.getRightDriveMotor().set(testTarget);
 		Actuators.getRightDriveMotor().enable();
-		
+		*/ autonPosition position = new autonPosition(3,3);
+			position.autonType();
 	}
+
 }

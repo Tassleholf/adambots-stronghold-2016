@@ -6,7 +6,7 @@ import org.usfirst.frc.team245.robot.Sensors;
 import com.github.adambots.stronghold2016.drive.Drive;
 
 public class Forward {
-	static double finishDistance = 0;
+	static double finishDistance = 5;
 	double done;
 	public Forward(){
 

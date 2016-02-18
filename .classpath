@@ -7,3 +7,4 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/OpenCV"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
+
