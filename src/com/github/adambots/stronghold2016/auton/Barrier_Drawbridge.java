@@ -20,6 +20,7 @@ public class Barrier_Drawbridge extends Barrier {
 	boolean crossed; // are we crossed
 
 	public Barrier_Drawbridge() {
+		super();
 		raised = false;
 		distance = 10;
 		there = false;
@@ -43,16 +44,16 @@ public class Barrier_Drawbridge extends Barrier {
 		double rightError = Actuators.getRightDriveMotor().getError();
 		rightError = Math.abs(rightError);
 		there = rightError < 100 && leftError < 100;
-		if(raised && !there){
+		if (raised && !there) {
 			Drive.driveWithPID(distance, distance);
-		}else{
+		} else {
 			Drive.drive(Actuators.STOP_MOTOR);
 			there = true;
 		}
 
-
 		if (there && !down) {
-			Arm.moveArm(-1);		}
+			Arm.moveArm(-1);
+		}
 		if (Sensors.getArmMinLimitSwitch().get()) {
 			down = true;
 
@@ -62,9 +63,9 @@ public class Barrier_Drawbridge extends Barrier {
 		rightError = Actuators.getRightDriveMotor().getError();
 		rightError = Math.abs(rightError);
 		crossed = rightError < 100 && leftError < 100;
-		if(raised && !crossed){
+		if (raised && !crossed) {
 			Drive.driveWithPID(crossingDistance, crossingDistance);
-		}else{
+		} else {
 			Drive.drive(Actuators.STOP_MOTOR);
 			crossed = true;
 		}

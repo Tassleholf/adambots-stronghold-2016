@@ -8,6 +8,9 @@ import org.usfirst.frc.team245.robot.Sensors;
  *
  */
 public class Arm {
+	static double MAX_ARM_POSITION = 5;
+	static double MIN_ARM_POSITION = 3;
+	
 	/**
 	 * Initializes arm
 	 */
@@ -19,6 +22,7 @@ public class Arm {
 
 	/**
 	 * Runs intake
+	 * 
 	 * @param intake
 	 * @param putout
 	 */
@@ -33,17 +37,24 @@ public class Arm {
 
 	/**
 	 * moves arm within range
+	 * 
 	 * @param speed
 	 */
 	public static void moveArm(double speed) {
-		if (Sensors.getArmMinLimitSwitch().get() == false && Sensors.getArmMaxLimitSwitch().get() == false) {
+
+		if (Actuators.getArmAngleMotor().getPosition() < MAX_ARM_POSITION && speed < 0) {
 			Actuators.getArmAngleMotor().set(speed);
-		}else{
+		} else if (Actuators.getArmAngleMotor().getPosition() > MIN_ARM_POSITION && speed > 0) {
+			Actuators.getArmAngleMotor().set(speed);
+		} else {
 			Actuators.getArmAngleMotor().set(Actuators.STOP_MOTOR);
+
 		}
 	}
+
 	/**
 	 * Runs winch to climb
+	 * 
 	 * @param button
 	 */
 	public static void climb(boolean button) {
@@ -52,16 +63,14 @@ public class Arm {
 			Actuators.getArmWinchMotor1().set(Actuators.MAX_MOTOR_SPEED);
 			Actuators.getArmWinchMotor2().set(Actuators.MAX_MOTOR_SPEED);
 			released = true;
-		}else if (released && button) {
+		} else if (released && button) {
 			Actuators.getArmWinchMotor1().set(Actuators.MAX_MOTOR_SPEED);
 			Actuators.getArmWinchMotor2().set(Actuators.MAX_MOTOR_SPEED);
-		}else{
+		} else {
 			Actuators.getArmWinchMotor1().set(Actuators.STOP_MOTOR);
 			Actuators.getArmWinchMotor2().set(Actuators.STOP_MOTOR);
 			Actuators.getWinchRatchetPneumatic().set(false);
 		}
 	}
-	
-	
-	
+
 }

@@ -12,6 +12,7 @@ public class Barrier_RoughTerrain extends Barrier {
 	boolean crossed;
 
 	public Barrier_RoughTerrain() {
+		super();
 		cat = 'B';
 		catNum = 1;
 		crossDistance = 30;
@@ -26,9 +27,9 @@ public class Barrier_RoughTerrain extends Barrier {
 		double rightError = Actuators.getRightDriveMotor().getError();
 		rightError = Math.abs(rightError);
 		crossed = rightError < 100 && leftError < 100;
-		if( crossed==false){
+		if (crossed == false) {
 			Drive.driveWithPID(crossDistance, crossDistance);
-		}else{
+		} else {
 			Drive.drive(Actuators.STOP_MOTOR);
 			crossed = true;
 		}

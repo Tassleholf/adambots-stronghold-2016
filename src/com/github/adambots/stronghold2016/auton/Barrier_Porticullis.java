@@ -10,8 +10,9 @@ import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 
 public class Barrier_Porticullis extends Barrier {
 	static int counter;
-	static int clearanceTime = 20;//Susceptible to change
-static int armIncrement;
+	static int clearanceTime = 20;// Susceptible to change
+	static int armIncrement;
+
 	public static void Porticullis(double raise, double speed) {
 		boolean position = false;
 		double tolerance = 0;
@@ -21,12 +22,12 @@ static int armIncrement;
 		}
 		if (position == true)
 			if (Sensors.getStringPotArmAngle() < raise) {
-				Arm.moveArm(armIncrement);//Arm speed may change
+				Arm.moveArm(armIncrement);// Arm speed may change
 			} else {
 				Drive.drive(speed);
 				// needs positioning
 				if (Sensors.getRobotGyro().getAngle() > -tolerance) {
-					
+
 				}
 			}
 		// needs positioning
@@ -35,8 +36,9 @@ static int armIncrement;
 			if (counter >= clearanceTime) {
 				Drive.drive(speed);
 			}
-			if (counter >= clearanceTime &&Sensors.getRobotGyro().getAngle() > -tolerance && Sensors.getRobotGyro().getAngle() < tolerance)  {
-				if(Sensors.getArmMinLimitSwitch().get()== false){
+			if (counter >= clearanceTime && Sensors.getRobotGyro().getAngle() > -tolerance
+					&& Sensors.getRobotGyro().getAngle() < tolerance) {
+				if (Sensors.getArmMinLimitSwitch().get() == false) {
 					Arm.moveArm(-armIncrement);// might need to change increment
 				}
 			}
