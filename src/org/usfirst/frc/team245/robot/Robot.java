@@ -182,7 +182,6 @@ public class Robot extends IterativeRobot {
 //			Shooter.stopLoadShooter();
 //		}
 		
-		
 
 	}
 
