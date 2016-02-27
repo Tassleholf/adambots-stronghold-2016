@@ -27,14 +27,16 @@ public class Sensors {
 	 */
 	public static void init() {
 		// Digital
-		winchEncoder = new Encoder(0, 0);
+		winchEncoder = new Encoder(0, 1);
 		intakeArmPhotoEye = new DigitalInput(0);
 		boulderCanLaunchPhotoEye = new DigitalInput(0);
-		catapultLimitSwitch = new DigitalInput(0);
+		catapultLimitSwitch = new DigitalInput(4);
 
 		// Analog
 		armPot = new AnalogPotentiometer(0, 360, 0);
 		robotGyro = new AnalogGyro(0);
+		armMaxLimitSwitch = new DigitalInput(3);
+		armMinLimitSwitch = new DigitalInput(2);
 	}
 
 	/**
