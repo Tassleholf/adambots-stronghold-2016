@@ -158,11 +158,11 @@ public class Robot extends IterativeRobot {
 		Dash_StringPotentiometer.stringArmAngleMotorDash();
 		
 		Drive.drive(Gamepad.primary.getTriggers(), Gamepad.primary.getLeftX());
-		if (Gamepad.primary.getLB() && pastShift == false) {
+		if (Gamepad.primary.getB() && pastShift == false) {
 			Drive.shift();
-			pastShift = Gamepad.primary.getLB();
-		} else if (!Gamepad.primary.getLB()) {
-			pastShift = Gamepad.primary.getLB();
+			pastShift = Gamepad.primary.getB();
+		} else if (!Gamepad.primary.getB()) {
+			pastShift = Gamepad.primary.getB();
 		}
 		
 		Arm.moveArm(Gamepad.secondary.getLeftY());
@@ -176,7 +176,7 @@ public class Robot extends IterativeRobot {
 		//
 		// Arm.rollers(Gamepad.primary.getA(), Gamepad.primary.getB());
 		//
-		// Arm.climb(Gamepad.secondary.getX());
+		// Arm.climb(Gamepad.secondary.getY());
 
 		// TEST CODE
 		// *****************************************************************
