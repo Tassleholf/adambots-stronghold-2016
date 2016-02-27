@@ -7,6 +7,7 @@ import com.github.adambots.stronghold2016.drive.Drive;
 
 public class Barrier_RoughTerrain extends Barrier {
 	char cat;
+	static double finishDistance = -200;
 	int catNum;
 	int crossDistance;
 	boolean crossed;
@@ -22,16 +23,7 @@ public class Barrier_RoughTerrain extends Barrier {
 
 	public void go() {
 
-		double leftError = Actuators.getLeftDriveMotor().getError();
-		leftError = Math.abs(leftError);
-		double rightError = Actuators.getRightDriveMotor().getError();
-		rightError = Math.abs(rightError);
-		crossed = rightError < 100 && leftError < 100;
-		if (crossed == false) {
-			Drive.driveWithPID(crossDistance, crossDistance);
-		} else {
-			Drive.drive(Actuators.STOP_MOTOR);
-			crossed = true;
-		}
+		 Drive.driveWithPID(finishDistance, finishDistance);
+		  
 	}
 }
