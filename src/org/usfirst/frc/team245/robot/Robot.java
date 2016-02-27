@@ -155,7 +155,7 @@ public class Robot extends IterativeRobot {
 	 */
 
 	public void teleopPeriodic() {
-		Dash_StringPotentiometer.stringPotDash();
+		Dash_StringPotentiometer.stringArmAngleMotorDash();
 		
 		Drive.drive(Gamepad.primary.getTriggers(), Gamepad.primary.getLeftX());
 		if (Gamepad.primary.getLB() && pastShift == false) {
