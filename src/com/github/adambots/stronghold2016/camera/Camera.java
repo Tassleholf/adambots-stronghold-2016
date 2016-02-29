@@ -21,15 +21,17 @@ public class Camera {
 	private static final int V_MIN = 250;
 	private static final int S_MAX = 13;
 	private static final int S_MIN = 0;
-	private static final int H_MAX = 82;
-	private static final int H_MIN = 0;
+	private static final int H_MAX = 81;
+	private static final int H_MIN = 55;
 
 	//Contour filtering constants
 	private static final double MIN_ASPECT_RATIO = 0;
-	private static final int MIN_CONTOUR_WIDTH = 40;
-	private static final int MIN_CONTOUR_HEIGHT = 40;
-	private static final int MAX_CONTOUR_WIDTH = 350;
+	private static final int MIN_CONTOUR_WIDTH = 50;
+	private static final int MIN_CONTOUR_HEIGHT = 20;
+	private static final int MAX_CONTOUR_WIDTH = 200;
 	private static final int MAX_CONTOUR_HEIGHT = 400;
+	private static final int MAX_AREA = -1;
+	private static final int MIN_AREA = -1;
 
 
 	private static final Scalar 
@@ -149,10 +151,10 @@ public class Camera {
 			MatOfPoint contour = (MatOfPoint) iterator.next();
 			Rect rec = Imgproc.boundingRect(contour);
 
-
-
-			if(rec.height < MIN_CONTOUR_HEIGHT || rec.width < MIN_CONTOUR_WIDTH
-					||rec.height > MAX_CONTOUR_HEIGHT || rec.width > MAX_CONTOUR_WIDTH){
+			if((rec.height < MIN_CONTOUR_HEIGHT || rec.width < MIN_CONTOUR_WIDTH
+					||rec.height > MAX_CONTOUR_HEIGHT || rec.width > MAX_CONTOUR_WIDTH) &&
+					(rec.width*rec.height < MAX_AREA || 
+					rec.width*rec.height > MIN_AREA)){
 				iterator.remove();
 				continue;
 			}
