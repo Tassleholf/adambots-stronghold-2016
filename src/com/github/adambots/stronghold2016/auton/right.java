@@ -6,35 +6,38 @@ import org.usfirst.frc.team245.robot.Sensors;
 import com.github.adambots.stronghold2016.drive.Drive;
 
 public class Right {
-	static double turnamountL = 0, turnamountR = 0, driveDistance = 0, finishDistance = 0;
-	// double turned;
-	// double inPosition;
-
-	// double turned2;
+	static double turnamountL = 40, turnamountR = 40, driveDistance = 48, finishDistance = 60;
 	Position_Optimizer optimizer;
 
 	public Right() {
 		optimizer = new Position_Optimizer();
 	}
 
-	public void go() {
-		optimizer.rightClassCode(turnamountL, turnamountR, driveDistance, finishDistance);
-		/**
-		 * turned = Actuators.getLeftDriveMotor().getError(); inPosition =
-		 * Actuators.getLeftDriveMotor().getError(); turned2 =
-		 * Actuators.getLeftDriveMotor().getError(); turned =
-		 * Actuators.getLeftDriveMotor().getError(); if (Math.abs(turned) < 100)
-		 * Drive.drive(Actuators.STOP_MOTOR); else{
-		 * Drive.driveWithPID(turnamountL, -turnamountR); } if
-		 * (Math.abs(inPosition) > 100 && Math.abs(turned) < 100)
-		 * Drive.driveWithPID(driveDistance, driveDistance); else{
-		 * Drive.drive(Actuators.STOP_MOTOR); }
-		 * 
-		 * if (Math.abs(inPosition) < 100 && Math.abs(turned2) > 100)
-		 * Drive.driveWithPID(-turnamountL, turnamountR); else{
-		 * Drive.drive(Actuators.STOP_MOTOR); } if (Math.abs(inPosition) < 100
-		 * && Math.abs(turned2) < 100) Drive.driveWithPID(finishDistance,
-		 * finishDistance); else{ Drive.drive(Actuators.STOP_MOTOR); }
-		 **/
+	public static void go() {
+boolean turned = false, iPosition = false, turned2 = false, finished = false;
+		
+		
+		
+
+		if (!turned){
+			Drive.driveWithPID(turnamountR, -turnamountL);
+			if(Math.abs(Actuators.getLeftDriveMotor().getError()) <20 && Math.abs(Actuators.getRightDriveMotor().getError()) < 20) {
+				turned = true;
+			}
+		}
+		if (turned && !iPosition){
+			Drive.driveWithPID(driveDistance, driveDistance);
+			iPosition = true;
+		}
+
+		if (iPosition && !turned2){
+			Drive.driveWithPID(-turnamountR, turnamountL);
+			turned2 = true;
+		}
+		if (turned2 && !finished){
+			Drive.driveWithPID(finishDistance, finishDistance);
+			finished = true;
+		}
+
 	}
 }

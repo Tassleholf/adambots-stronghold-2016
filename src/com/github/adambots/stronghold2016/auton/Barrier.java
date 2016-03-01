@@ -1,8 +1,8 @@
 package com.github.adambots.stronghold2016.auton;
 
 public class Barrier {
-	char cat;
-	int catNum;
+	char category;
+	int categoryNum;
 	boolean running = false;
 
 	public Barrier() {
@@ -13,12 +13,12 @@ public class Barrier {
 
 	}
 
-	public char getCat() {
-		return cat;
+	public char getCategory() {
+		return category;
 	}
 
-	public int getCatNum() {
-		return catNum;
+	public int getCategoryNum() {
+		return categoryNum;
 
 	}
 

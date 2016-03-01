@@ -19,8 +19,8 @@ public class Barrier_ChevalDeFrise extends Barrier {
 
 	public Barrier_ChevalDeFrise() {
 		super();
-		super.cat = 'A';
-		super.catNum = 2;
+		super.category = 'A';
+		super.categoryNum = 2;
 		raised = false;
 		distance = 10;
 		there = false;

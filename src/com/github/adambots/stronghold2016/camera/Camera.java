@@ -62,6 +62,7 @@ public class Camera {
 	public static final double HORIZONTAL_FOV  = 0;
 	public static final double CAMERA_ANGLE = 0;
 
+	
 	public static void init(){
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		matOriginal = new Mat();
@@ -189,7 +190,6 @@ public class Camera {
 			if(thisAspect >= lastAspect){
 				bestContour = mop;
 			}
-
 			lastContour = mop;
 		}
 		return bestContour;

@@ -46,8 +46,9 @@ public class Robot extends IterativeRobot {
 	 * used for any initialization code.
 	 */
 	public void robotInit() {
+		Actuators.init();
 		chooser = new SendableChooser();
-		barrierChooser = new SendableChooser();
+		//barrierChooser = new SendableChooser();
 		compressor = new Compressor();
 		chooser.addDefault("Forward", new Forward());
 		chooser.addObject("left two positions", new FarLeft());
@@ -56,24 +57,24 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("right two positions", new FarRight());
 		chooser.addObject("right three positions", new SuperRight());
 		// TODO: Uncomment inits
-		// Sensors.init();
+		 //Sensors.init();
 		// Shooter.init();
 		
-		Actuators.init();
+		
 		Drive.init();// does not have anything
 		// AutoTarget.init();//does not contain anything
 
-		// chooser.addObject("My Auto", new MyAutoCommand());
+		chooser.addObject("My Auto", new Forward());
 		SmartDashboard.putData("Auto mode", chooser);
 
-		barrierChooser.addDefault("ChevalDeFrise", new Barrier_ChevalDeFrise());
+		/*barrierChooser.addDefault("ChevalDeFrise", new Barrier_ChevalDeFrise());
 		barrierChooser.addObject("Drawbridge", new Barrier_Drawbridge());
-		barrierChooser.addObject("RoughTerrain", new Barrier_RoughTerrain());
+		barrierChooser.addObject("RoughTerrain", new Barrier_RoughTerrain());*/
 		//Barrier activeB = (Barrier) barrierChooser.getSelected();
-		SmartDashboard.putData("Barrier mode", barrierChooser);
+		//SmartDashboard.putData("Barrier mode", barrierChooser);
 		//SmartDashboard.putBoolean("barrier working", activeB.running());
 		//Actuators.init();
-		Dash_Camera.camerasInit();
+		//Dash_Camera.camerasInit();
 
 	}
 
@@ -102,7 +103,9 @@ public class Robot extends IterativeRobot {
 	 * to the switch structure below with additional strings commands.
 	 */
 	public void autonomousInit() {
-		autonomousCommand = (Command) chooser.getSelected();
+		Actuators.getLeftDriveMotor().setEncPosition(0);
+		Actuators.getRightDriveMotor().setEncPosition(0);
+		//autonomousCommand = (Command) chooser.getSelected();
 		Actuators.teleopInit();
 		
 		 String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
@@ -119,8 +122,8 @@ public class Robot extends IterativeRobot {
 		 
 
 		// schedule the autonomous command (example)
-		if (autonomousCommand != null)
-			autonomousCommand.start();
+		//if (autonomousCommand != null)
+		//	autonomousCommand.start();
 	}
 
 	/**
@@ -128,7 +131,10 @@ public class Robot extends IterativeRobot {
 	 */
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+		
+		//autonomousCommand.start();
 		AutonMain.test();
+		
 
 	}
 
@@ -140,18 +146,15 @@ public class Robot extends IterativeRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-<<<<<<< HEAD
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
 		//Arm.init();
 		pastShift = false;
 		
-=======
 		// if (autonomousCommand != null)
 		// autonomousCommand.cancel();
 		// Arm.init();
 		//pastShift = false;
->>>>>>> Adambots-245/master
 
 		// TODO:TEST CODE
 
@@ -164,50 +167,16 @@ public class Robot extends IterativeRobot {
 	 */
 
 	public void teleopPeriodic() {
-		Dash_StringPotentiometer.stringPotDash();
+		Dash_StringPotentiometer.stringArmAngleMotorDash();
 		
 		Drive.drive(Gamepad.primary.getTriggers(), Gamepad.primary.getLeftX());
-<<<<<<< HEAD
-		
-		if(Gamepad.primary.getLB() && pastShift == false){
-=======
-		if (Gamepad.primary.getLB() && pastShift == false) {
->>>>>>> Adambots-245/master
+		if (Gamepad.primary.getB() && pastShift == false) {
 			Drive.shift();
-			pastShift = Gamepad.primary.getLB();
-		} else if (!Gamepad.primary.getLB()) {
-			pastShift = Gamepad.primary.getLB();
+			pastShift = Gamepad.primary.getB();
+		} else if (!Gamepad.primary.getB()) {
+			pastShift = Gamepad.primary.getB();
 		}
 		
-<<<<<<< HEAD
-//		Shooter.shoot(Gamepad.primary.getRB()); //TODO: Needs to be tested
-//		Scheduler.getInstance().run();
-//TODO: TEST ARM CODE
-//		Arm.moveArm(Gamepad.secondary.getRightY());
-//
-//		Arm.rollers(Gamepad.primary.getA(), Gamepad.primary.getB());
-//
-//		Arm.climb(Gamepad.secondary.getX());
-
-		
-		
-
-		//TEST CODE *****************************************************************
-
-		//***************************************************************************
-//		if(Gamepad.primary.getRB()){
-//			//if using PID in CANTalons
-//			//Shooter.loadShooter();
-//			//if using PID class on roborio
-//			isShooterLoaded = Shooter.loadShooter(0);
-//		}else if(!isShooterLoaded){
-//			isShooterLoaded = Shooter.loadShooter(0);
-//		}
-//		else{
-//			Shooter.stopLoadShooter();
-//		}
-		
-=======
 		Arm.moveArm(Gamepad.secondary.getLeftY());
 		
 		Dash_Camera.cameras(Gamepad.secondary.getX());
@@ -219,7 +188,7 @@ public class Robot extends IterativeRobot {
 		//
 		// Arm.rollers(Gamepad.primary.getA(), Gamepad.primary.getB());
 		//
-		// Arm.climb(Gamepad.secondary.getX());
+		// Arm.climb(Gamepad.secondary.getY());
 
 		// TEST CODE
 		// *****************************************************************
@@ -236,7 +205,6 @@ public class Robot extends IterativeRobot {
 		// else{
 		// Shooter.stopLoadShooter();
 		// }
->>>>>>> Adambots-245/master
 
 	}
 

@@ -27,12 +27,14 @@ public class Arm {
 	 * @param putout
 	 */
 	public static void rollers(boolean intake, boolean putout) {
-		if (intake == true) {
+		if (intake == putout) {
+			Actuators.getBoulderIntakeMotor().set(0);
+		} else if (intake == true) {
 			Actuators.getBoulderIntakeMotor().set(Actuators.MAX_MOTOR_SPEED);
-		}
-		if (putout == true) {
+		} else if (putout == true) {
 			Actuators.getBoulderIntakeMotor().set(Actuators.MIN_MOTOR_SPEED);
 		}
+
 	}
 
 	/**
@@ -41,10 +43,10 @@ public class Arm {
 	 * @param speed
 	 */
 	public static void moveArm(double speed) {
-
-		if (Actuators.getArmAngleMotor().getPosition() < MAX_ARM_POSITION && speed < 0) {
+		speed = -speed;
+		if (!(Actuators.getArmAngleMotor().getPosition() > MAX_ARM_POSITION || Sensors.getArmMaxLimitSwitch().get()) && speed > 0) {
 			Actuators.getArmAngleMotor().set(speed);
-		} else if (Actuators.getArmAngleMotor().getPosition() > MIN_ARM_POSITION && speed > 0) {
+		} else if (!(Actuators.getArmAngleMotor().getPosition() < MIN_ARM_POSITION || Sensors.getArmMinLimitSwitch().get()) && speed < 0) {
 			Actuators.getArmAngleMotor().set(speed);
 		} else {
 			Actuators.getArmAngleMotor().set(Actuators.STOP_MOTOR);
@@ -58,12 +60,11 @@ public class Arm {
 	 * @param button
 	 */
 	public static void climb(boolean button) {
-		if (!released && button) {
+		if (!Actuators.getWinchRatchetPneumatic().get() && button) {
 			Actuators.getWinchRatchetPneumatic().set(true);
 			Actuators.getArmWinchMotor1().set(Actuators.MAX_MOTOR_SPEED);
 			Actuators.getArmWinchMotor2().set(Actuators.MAX_MOTOR_SPEED);
-			released = true;
-		} else if (released && button) {
+		} else if (Actuators.getWinchRatchetPneumatic().get() && button) {
 			Actuators.getArmWinchMotor1().set(Actuators.MAX_MOTOR_SPEED);
 			Actuators.getArmWinchMotor2().set(Actuators.MAX_MOTOR_SPEED);
 		} else {

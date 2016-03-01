@@ -3,8 +3,8 @@ package com.github.adambots.stronghold2016.auton;
 import java.util.ArrayList;
 
 public class Auton_Barrier {
-	public static char[] defenseCat = new char[4];
-	public static int[] catNumber = new int[4];
+	public static char[] defenseCategory = new char[4];
+	public static int[] categoryNumber = new int[4];
 	public static ArrayList<Barrier> bAutons = new ArrayList<Barrier>();
 	public static int defIndex;
 	public static int curPos;
@@ -45,10 +45,10 @@ public class Auton_Barrier {
 	/**
 	 * sorts the barrier code finding the correct one to do
 	 */
-	public static void autonBarrierGo(char[] dBCI, int[] dBCNI, int cPN) {
-		defenseCat = dBCI;
-		catNumber = dBCNI;
-		curPos = cPN;
+	public static void autonBarrierGo(char[] defenseBarrierCategoryInput, int[] defenseBarrierCategoryInputNumber, int categoryPositionNumber) {
+		defenseCategory = defenseBarrierCategoryInput;
+		categoryNumber = defenseBarrierCategoryInputNumber;
+		curPos = categoryPositionNumber;
 		bAutons.set(0, new Barrier());
 		bAutons.set(1, new Barrier());
 		bAutons.set(2, new Barrier());
@@ -57,8 +57,8 @@ public class Auton_Barrier {
 		bAutons.set(5, new Barrier());
 		bAutons.set(6, new Barrier());
 		bAutons.set(7, new Barrier());
-		for (int x = 0; x < 8; x++) {
-			if (bAutons.get(x).getCat() == defenseCat[curPos] && bAutons.get(x).getCatNum() == catNumber[curPos]) {
+		for (int x = 0; x < 8; x++) { //checks for category because for some categories, the barriers are essentially the same
+			if (bAutons.get(x).getCategory() == defenseCategory[curPos] && bAutons.get(x).getCategoryNum() == categoryNumber[curPos]) {
 				defIndex = x;
 			}
 		}

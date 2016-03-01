@@ -2,6 +2,8 @@ package com.github.adambots.stronghold2016.auton;
 
 import org.usfirst.frc.team245.robot.Actuators;
 
+import com.github.adambots.stronghold2016.drive.Drive;
+
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,6 +16,9 @@ public class AutonMain {
 	private static final float PEAK_REVERSE_VOLTAGE = -12f;
 	private static final float PEAK_FORWARD_VOLTAGE = +12f;
 	private static final int CODES_PER_REV = 720;
+	private static final double driveKP = 0.5;
+	private static final double driveKI = 0.0;
+	private static final double driveKD = 0.0;
 
 	public static void init() {
 		Actuators.getLeftDriveMotor().reset();
@@ -28,7 +33,21 @@ public class AutonMain {
 		Actuators.getLeftDriveMotor().configPeakOutputVoltage(PEAK_FORWARD_VOLTAGE, PEAK_REVERSE_VOLTAGE);
 
 		Actuators.getLeftDriveMotor().setAllowableClosedLoopErr(ACCEPTABLE_ERROR);
-		Actuators.getLeftDriveMotor().setPID(0.1, 0, 0);
+		Actuators.getLeftDriveMotor().setPID(driveKP, driveKI, driveKD);
+		
+		Actuators.getRightDriveMotor().reset();
+		Actuators.getRightDriveMotor().enableZeroSensorPositionOnIndex(true, true);
+		Actuators.getRightDriveMotor().setPosition(0);
+		Actuators.getRightDriveMotor().setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		Actuators.getRightDriveMotor().reverseSensor(true);
+
+		Actuators.getRightDriveMotor().configEncoderCodesPerRev(CODES_PER_REV);
+
+		Actuators.getRightDriveMotor().configNominalOutputVoltage(NOMINAL_FORWARD_VOLTAGE, NOMINAL_REVERSE_VOLTAGE);
+		Actuators.getRightDriveMotor().configPeakOutputVoltage(PEAK_FORWARD_VOLTAGE, PEAK_REVERSE_VOLTAGE);
+
+		Actuators.getRightDriveMotor().setAllowableClosedLoopErr(ACCEPTABLE_ERROR);
+		Actuators.getRightDriveMotor().setPID(driveKP, driveKI, driveKD);
 
 	}
 
@@ -50,20 +69,29 @@ public class AutonMain {
 	}
 
 	public static void test() {
-		/*
-		 * SmartDashboard.putNumber("LEFT_ERROR",
-		 * Actuators.getLeftDriveMotor().getError());
-		 * SmartDashboard.putNumber("RIGHT_ERROR",
-		 * Actuators.getRightDriveMotor().getError());
-		 * Actuators.getLeftDriveMotor().changeControlMode(TalonControlMode.
-		 * Position); final int testTarget = 1;
-		 * Actuators.getLeftDriveMotor().set(-testTarget);
-		 * Actuators.getLeftDriveMotor().enable();
-		 * 
-		 * Actuators.getRightDriveMotor().changeControlMode(TalonControlMode.
-		 * Position); Actuators.getRightDriveMotor().set(testTarget);
-		 * Actuators.getRightDriveMotor().enable();
-		 */
+		
+		  SmartDashboard.putNumber("LEFT_ERROR",
+		  Actuators.getLeftDriveMotor().getError());
+		  SmartDashboard.putNumber("RIGHT_ERROR",
+		  Actuators.getRightDriveMotor().getError());
+		 /*Actuators.getLeftDriveMotor().changeControlMode(TalonControlMode.
+		  Position); 
+		 final int testTarget = 1;
+		  Actuators.getLeftDriveMotor().set(-testTarget);
+		  
+		  
+		  Actuators.getRightDriveMotor().changeControlMode(TalonControlMode.
+		  Position); Actuators.getRightDriveMotor().set(testTarget);
+		   */
+		 Left.go();
+		 //Actuators.getLeftDriveMotor().enable();
+		 //Actuators.getRightDriveMotor().enable();
+		 
+		 /* Actuators.getLeftDriveMotor().changeControlMode(TalonControlMode.PercentVbus);
+		  Actuators.getRightDriveMotor().changeControlMode(TalonControlMode.PercentVbus);
+		  Actuators.getRightDriveMotor().set(.5);
+		  Actuators.getLeftDriveMotor().set(.5);
+		  */
 	}
 
 }
