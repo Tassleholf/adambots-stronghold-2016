@@ -28,29 +28,34 @@ public class Sensors {
 	public static void init() {
 		// Digital
 		winchEncoder = new Encoder(0, 1);
-		intakeArmPhotoEye = new DigitalInput(0);
-		boulderCanLaunchPhotoEye = new DigitalInput(0);
+		try{
+		intakeArmPhotoEye = new DigitalInput(5);
+		boulderCanLaunchPhotoEye = new DigitalInput(6);
+		}
+		catch(Exception e){
+			System.out.println(e.toString());
+		}
 		catapultLimitSwitch = new DigitalInput(4);
 
 		// Analog
-		armPot = new AnalogPotentiometer(0, 360, 0);
-		robotGyro = new AnalogGyro(0);
+		armPot = new AnalogPotentiometer(1, 360, 0);
+		//robotGyro = new AnalogGyro(0);
 		armMaxLimitSwitch = new DigitalInput(3);
 		armMinLimitSwitch = new DigitalInput(2);
 	}
 
 	/**
-	 * @return the armMaxLimitSwitch
+	 * @return the armMaxLimitSwitch (invert when using .get())
 	 */
 	public static DigitalInput getArmMaxLimitSwitch() {
-		return armMaxLimitSwitch;
+		return armMaxLimitSwitch; 
 	}
 
 	/**
-	 * @return the armMinLimitSwitch
+	 * @return the armMinLimitSwitch (invert when using .get())
 	 */
 	public static DigitalInput getArmMinLimitSwitch() {
-		return armMinLimitSwitch;
+		return armMinLimitSwitch; 
 	}
 
 	/**
