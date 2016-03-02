@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Solenoid;
 
 /**
  * All Robot sensors
@@ -16,12 +17,13 @@ public class Sensors {
 	private static DigitalInput catapultLimitSwitch;
 	private static DigitalInput armMaxLimitSwitch;
 	private static DigitalInput armMinLimitSwitch;
+
 	// Analog
 	private static AnalogPotentiometer armPot;
 	private static AnalogGyro robotGyro;
 	private static double stringPotArmDist;
 	private static double stringPotChassisDist;
-
+	
 	/**
 	 * Initializes all sensors
 	 */
@@ -36,7 +38,7 @@ public class Sensors {
 			System.out.println(e.toString());
 		}
 		catapultLimitSwitch = new DigitalInput(4);
-
+		ringLight = new Solenoid(3);
 		// Analog
 		armPot = new AnalogPotentiometer(1, 360, 0);
 		//robotGyro = new AnalogGyro(0);
@@ -111,5 +113,7 @@ public class Sensors {
 		return Math.acos((Math.pow(stringPotArmDist, 2) + Math.pow(stringPotChassisDist, 2) - Math.pow(displace, 2))
 				/ (2 * stringPotArmDist * stringPotChassisDist));
 	}
+	
+
 
 }

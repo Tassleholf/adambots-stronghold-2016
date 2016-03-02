@@ -70,6 +70,8 @@ public class Actuators {
 	private static Solenoid driveShiftPneumatic;
 
 	private static Solenoid winchRatchetPneumatic;
+	
+	private static Solenoid ringLight;
 
 	/**
 	 * Initializes all actuators
@@ -195,6 +197,13 @@ public class Actuators {
 
 	public static Solenoid getWinchRatchetPneumatic() {
 		return winchRatchetPneumatic;
+	}
+	
+	/**
+	 * @return the ringLight
+	 */
+	public static Solenoid getRingLight() {
+		return ringLight;
 	}
 
 	private static CANTalon initCANTalon(CANTalon talon, FeedbackDevice device, boolean reverseSensor, int codesPerRev, int acceptableErr, 
