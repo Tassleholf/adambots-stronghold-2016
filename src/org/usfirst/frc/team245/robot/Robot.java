@@ -6,6 +6,7 @@ import com.github.adambots.stronghold2016.auton.AutonMain;
 import com.github.adambots.stronghold2016.auton.Barrier_ChevalDeFrise;
 import com.github.adambots.stronghold2016.auton.Barrier_Drawbridge;
 import com.github.adambots.stronghold2016.auton.Barrier_RoughTerrain;
+import com.github.adambots.stronghold2016.auton.Default;
 import com.github.adambots.stronghold2016.auton.FarLeft;
 import com.github.adambots.stronghold2016.auton.FarRight;
 import com.github.adambots.stronghold2016.auton.Forward;
@@ -51,12 +52,13 @@ public class Robot extends IterativeRobot {
 		chooser = new SendableChooser();
 		//barrierChooser = new SendableChooser();
 		compressor = new Compressor();
-		chooser.addDefault("Forward", new Forward());
+		chooser.addDefault("None", new Default());
 		chooser.addObject("left two positions", new FarLeft());
 		chooser.addObject("left one positions", new Left());
 		chooser.addObject("right one positions", new Right());
 		chooser.addObject("right two positions", new FarRight());
 		chooser.addObject("right three positions", new SuperRight());
+		chooser.addObject("Forward", new Forward());
 		// TODO: Uncomment inits
 		 Sensors.init();
 		 //Shooter.init();
@@ -65,7 +67,7 @@ public class Robot extends IterativeRobot {
 		Drive.init();// does not have anything
 		// AutoTarget.init();//does not contain anything
 
-		chooser.addObject("My Auto", new Forward());
+		
 		SmartDashboard.putData("Auto mode", chooser);
 
 		/*barrierChooser.addDefault("ChevalDeFrise", new Barrier_ChevalDeFrise());
@@ -129,7 +131,7 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 		
 		//autonomousCommand.start();
-		AutonMain.test();
+//		AutonMain.test();
 		
 
 	}
