@@ -3,13 +3,13 @@ package com.github.adambots.stronghold2016.camera;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.opencv.core.*;
-import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.imgproc.Imgproc;
-import org.opencv.videoio.VideoCapture;
+//import org.opencv.core.*;
+//import org.opencv.imgcodecs.Imgcodecs;
+//import org.opencv.imgproc.Imgproc;
+//import org.opencv.videoio.VideoCapture;
 
 public class Camera {
-	//HSV Filter constants
+	/*//HSV Filter constants
 	private static final int V_MAX = 255;
 	private static final int V_MIN = 216;
 	private static final int S_MAX = 21;
@@ -85,7 +85,7 @@ public class Camera {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		init();
+		/*init();
 		System.out.println(openStream());
 		try {
 			Thread.sleep(5000);
@@ -93,13 +93,13 @@ public class Camera {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Target target = getTarget();
+		/*Target target = getTarget();
 		System.out.println(target.getCenterX() + " "+ target.getCenterY());
-		System.out.println(closeStream());
+		System.out.println(closeStream());*/
 		
 	}
 
-	public static Target getTarget(){
+	/*public static Target getTarget(){
 		Rect rec = Imgproc.boundingRect(getBestContour());
 		
 		int centerX = rec.width/2 + rec.x;
@@ -116,8 +116,8 @@ public class Camera {
 		Imgcodecs.imwrite("output.png", matOriginal);
 		//---
 		return new Target(centerX, centerY, rec.width * rec.height, distance);
-	}
-	public static ArrayList<MatOfPoint> getContours(){
+	}*/
+	/*public static ArrayList<MatOfPoint> getContours(){
 
 		videoCapture.read(matOriginal);
 		
@@ -156,9 +156,9 @@ public class Camera {
 				iterator.remove();
 		}
 		return contours;
-	}
+	}*/
 	
-	public static MatOfPoint getBestContour() {
+	/*public static MatOfPoint getBestContour() {
 
 		ArrayList<MatOfPoint> contours = getContours();
 		MatOfPoint bestContour = null;
@@ -179,7 +179,7 @@ public class Camera {
 		}
 		return bestContour;
 
-	}
+	}*/
 
 
 
