@@ -30,7 +30,7 @@ public class Shooter {
 	 */
 	public static void stopLoadShooter() {
 		Actuators.getArmAngleMotor().set(Actuators.STOP_MOTOR);
-		Actuators.getArmAngleMotor().disable();
+//		Actuators.getArmAngleMotor().disable();
 	}
 
 	/**

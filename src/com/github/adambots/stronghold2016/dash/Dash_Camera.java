@@ -17,15 +17,17 @@ public class Dash_Camera {
 			sessionfront = NIVision.IMAQdxOpenCamera("cam0",
 					NIVision.IMAQdxCameraControlMode.CameraControlModeController);
 		} catch (Exception e) {
-			System.out.println(e.toString());
+			System.out.println("cam0 "+ e.toString());
 		}
 		try {
 			sessionback = NIVision.IMAQdxOpenCamera("cam1",
 					NIVision.IMAQdxCameraControlMode.CameraControlModeController);
 		} catch (Exception e) {
-			System.out.println(e.toString());
+			System.out.println("cam1 "+ e.toString());
 		}
+		
 		currSession = sessionfront;
+		
 		try {
 			NIVision.IMAQdxConfigureGrab(currSession);
 		} catch (Exception e) {
@@ -35,7 +37,7 @@ public class Dash_Camera {
 
 	public static void cameras(boolean toggle) {
 		if (toggle) {
-			if (currSession == sessionfront) {
+			if (currSession != 0 && currSession == sessionfront ) {
 				try {
 					NIVision.IMAQdxStopAcquisition(currSession);
 					currSession = sessionback;
@@ -43,7 +45,7 @@ public class Dash_Camera {
 				} catch (Exception e) {
 					System.out.println(e.toString());
 				}
-			} else if (currSession == sessionback) {
+			} else if (currSession != 0 && currSession == sessionback) {
 				try {
 					NIVision.IMAQdxStopAcquisition(currSession);
 					currSession = sessionfront;

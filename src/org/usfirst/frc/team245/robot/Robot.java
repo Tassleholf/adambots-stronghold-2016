@@ -76,7 +76,7 @@ public class Robot extends IterativeRobot {
 		//SmartDashboard.putBoolean("barrier working", activeB.running());
 		//Actuators.init();
 		Dash_Camera.camerasInit();
-		Actuators.getRingLight().set(true);
+//		Actuators.getRingLight().set(true);
 
 	}
 
@@ -86,11 +86,12 @@ public class Robot extends IterativeRobot {
 	 * the robot is disabled.
 	 */
 	public void disabledInit() {
-		Actuators.getRingLight().set(false);
+//		Actuators.getRingLight().set(false);
 	}
 
 	public void disabledPeriodic() {
 		LiveWindow.run();
+		Dash_Camera.cameras(Gamepad.secondary.getX());
 	}
 
 	/**
@@ -199,6 +200,10 @@ public class Robot extends IterativeRobot {
 
 		// ***************************************************************************
 		Shooter.shoot(Gamepad.primary.getA());
+		if(Gamepad.primary.getBack() && !Gamepad.primary.getA()){
+			Shooter.stopLoadShooter();
+		}
+		
 		SmartDashboard.putBoolean("Catapult limit switch", Sensors.getCatapultLimitSwitch().get());
 		String gear;
 		if(Actuators.getDriveShiftPneumatic().get()){
