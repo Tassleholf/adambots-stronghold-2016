@@ -13,25 +13,52 @@ public class Dash_Camera {
 
 	public static void camerasInit() {
 		frame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
-		sessionfront = NIVision.IMAQdxOpenCamera("cam0", NIVision.IMAQdxCameraControlMode.CameraControlModeController);
-		sessionback = NIVision.IMAQdxOpenCamera("cam1", NIVision.IMAQdxCameraControlMode.CameraControlModeController);
+		try {
+			sessionfront = NIVision.IMAQdxOpenCamera("cam0",
+					NIVision.IMAQdxCameraControlMode.CameraControlModeController);
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+		try {
+			sessionback = NIVision.IMAQdxOpenCamera("cam1",
+					NIVision.IMAQdxCameraControlMode.CameraControlModeController);
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
 		currSession = sessionfront;
-		NIVision.IMAQdxConfigureGrab(currSession);
+		try {
+			NIVision.IMAQdxConfigureGrab(currSession);
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
 	}
 
 	public static void cameras(boolean toggle) {
 		if (toggle) {
 			if (currSession == sessionfront) {
-				NIVision.IMAQdxStopAcquisition(currSession);
-				currSession = sessionback;
-				NIVision.IMAQdxConfigureGrab(currSession);
+				try {
+					NIVision.IMAQdxStopAcquisition(currSession);
+					currSession = sessionback;
+					NIVision.IMAQdxConfigureGrab(currSession);
+				} catch (Exception e) {
+					System.out.println(e.toString());
+				}
 			} else if (currSession == sessionback) {
-				NIVision.IMAQdxStopAcquisition(currSession);
-				currSession = sessionfront;
-				NIVision.IMAQdxConfigureGrab(currSession);
+				try {
+					NIVision.IMAQdxStopAcquisition(currSession);
+					currSession = sessionfront;
+					NIVision.IMAQdxConfigureGrab(currSession);
+				} catch (Exception e) {
+					System.out.println(e.toString());
+				}
 			}
 		}
-		NIVision.IMAQdxGrab(currSession, frame, 1);
-		CameraServer.getInstance().setImage(frame);
+		try {
+			NIVision.IMAQdxGrab(currSession, frame, 1);
+			CameraServer.getInstance().setImage(frame);
+
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
 	}
 }
