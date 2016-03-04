@@ -9,7 +9,7 @@ import org.usfirst.frc.team245.robot.Sensors;
  */
 public class Arm {
 	static double MAX_ARM_POSITION = 5;
-	static double MIN_ARM_POSITION = 3;
+	static double MIN_ARM_POSITION = 0;
 	
 	/**
 	 * Initializes arm
@@ -18,7 +18,6 @@ public class Arm {
 		Actuators.getWinchRatchetPneumatic().set(false);
 	}
 
-	private static boolean released = false;
 
 	/**
 	 * Runs intake
@@ -28,7 +27,7 @@ public class Arm {
 	 */
 	public static void rollers(boolean intake, boolean putout) {
 		if (intake == putout) {
-			Actuators.getBoulderIntakeMotor().set(0);
+			Actuators.getBoulderIntakeMotor().set(Actuators.STOP_MOTOR);
 		} else if (intake == true) {
 			Actuators.getBoulderIntakeMotor().set(Actuators.MAX_MOTOR_SPEED);
 		} else if (putout == true) {
@@ -63,14 +62,38 @@ public class Arm {
 		if (!Actuators.getWinchRatchetPneumatic().get() && button) {
 			Actuators.getWinchRatchetPneumatic().set(true);
 			Actuators.getArmWinchMotor1().set(Actuators.MAX_MOTOR_SPEED);
-			Actuators.getArmWinchMotor2().set(Actuators.MAX_MOTOR_SPEED);
+			Actuators.getArmWinchMotor2().set(-Actuators.MAX_MOTOR_SPEED);
 		} else if (Actuators.getWinchRatchetPneumatic().get() && button) {
 			Actuators.getArmWinchMotor1().set(Actuators.MAX_MOTOR_SPEED);
-			Actuators.getArmWinchMotor2().set(Actuators.MAX_MOTOR_SPEED);
+			Actuators.getArmWinchMotor2().set(-Actuators.MAX_MOTOR_SPEED);
 		} else {
 			Actuators.getArmWinchMotor1().set(Actuators.STOP_MOTOR);
 			Actuators.getArmWinchMotor2().set(Actuators.STOP_MOTOR);
 			Actuators.getWinchRatchetPneumatic().set(false);
+		}
+	}
+	public static void release(){
+		Actuators.getWinchRatchetPneumatic().set(!Actuators.getWinchRatchetPneumatic().get());
+	}
+	public static void climb(double speed) {
+		//if (!Actuators.getWinchRatchetPneumatic().get() && speed > 0) {
+			//Actuators.getWinchRatchetPneumatic().set(true);
+			//Actuators.getArmWinchMotor1().set(-Actuators.MAX_MOTOR_SPEED);
+			//Actuators.getArmWinchMotor2().set(-Actuators.MAX_MOTOR_SPEED);
+		if (speed > 0) {
+			Actuators.getArmWinchMotor1().set(speed);
+			Actuators.getArmWinchMotor2().set(-speed);
+		//}else if (!Actuators.getWinchRatchetPneumatic().get() && speed < 0) {
+			//Actuators.getWinchRatchetPneumatic().set(true);
+			//Actuators.getArmWinchMotor1().set(-Actuators.MIN_MOTOR_SPEED);
+			//Actuators.getArmWinchMotor2().set(-Actuators.MIN_MOTOR_SPEED);
+		} else if ( speed < 0) {
+			Actuators.getArmWinchMotor1().set(speed);
+			Actuators.getArmWinchMotor2().set(-speed);
+		} else { 
+			Actuators.getArmWinchMotor1().set(Actuators.STOP_MOTOR);
+			Actuators.getArmWinchMotor2().set(Actuators.STOP_MOTOR);
+			//Actuators.getWinchRatchetPneumatic().set(false);
 		}
 	}
 

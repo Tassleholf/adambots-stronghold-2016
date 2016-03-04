@@ -95,8 +95,8 @@ public class Actuators {
 		leftDriveMotor2.setInverted(true);
 		leftDriveMotor2.set(leftDriveMotor.getDeviceID());
 
-		armWinchMotor1 = new VictorSP(12);
-		armWinchMotor2 = new VictorSP(13);
+		armWinchMotor1 = new VictorSP(1);
+		armWinchMotor2 = new VictorSP(0);
 		armWinchMotor2.setInverted(true);
 
 		armAngleMotor = new CANTalon(4);
@@ -105,9 +105,9 @@ public class Actuators {
 		//TODO: Use string pot with CANTalon
 		
 
-		boulderIntakeMotor = new VictorSP(4);
+		boulderIntakeMotor = new VictorSP(2);
 
-		catapultMotor = new VictorSP(14);
+		catapultMotor = new VictorSP(3);
 
 		// Solenoids
 		driveShiftPneumatic = new Solenoid(0);
