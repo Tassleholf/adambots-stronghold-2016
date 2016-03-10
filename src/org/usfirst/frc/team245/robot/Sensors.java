@@ -17,7 +17,7 @@ public class Sensors {
 	private static DigitalInput catapultLimitSwitch;
 	private static DigitalInput armMaxLimitSwitch;
 	private static DigitalInput armMinLimitSwitch;
-
+	private static Solenoid ringLight;
 	// Analog
 	// private static AnalogPotentiometer armPot;
 	private static AnalogGyro robotGyro;

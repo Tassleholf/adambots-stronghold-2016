@@ -8,6 +8,7 @@ import com.github.adambots.stronghold2016.drive.Drive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Forward {
+//	static double finishDistance = 48, allotedError = 60;
 	static double finishDistance = -100, allotedError = 60;
 	static boolean reset = false, isDone;
 	// Position_Optimizer optimizer;

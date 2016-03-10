@@ -52,13 +52,13 @@ public class Robot extends IterativeRobot {
 		chooser = new SendableChooser();
 		// barrierChooser = new SendableChooser();
 		compressor = new Compressor();
-		chooser.addDefault("Default", new Default());
-		chooser.addObject("Forward", new Forward());
+		chooser.addDefault("None", new Default());
 		chooser.addObject("left two positions", new FarLeft());
 		chooser.addObject("left one positions", new Left());
 		chooser.addObject("right one positions", new Right());
 		chooser.addObject("right two positions", new FarRight());
 		chooser.addObject("right three positions", new SuperRight());
+		chooser.addObject("Forward", new Forward());
 		// TODO: Uncomment inits
 		Sensors.init();
 		Shooter.init();
@@ -66,7 +66,6 @@ public class Robot extends IterativeRobot {
 		Drive.init();// does not have anything
 		// AutoTarget.init();//does not contain anything
 
-		chooser.addObject("My Auto", new Forward());
 		SmartDashboard.putData("Auto mode", chooser);
 
 		/*
@@ -95,6 +94,7 @@ public class Robot extends IterativeRobot {
 	public void disabledPeriodic() {
 		LiveWindow.run();
 		Dash_Camera.cameras(Gamepad.secondary.getX());
+		SmartDashboard.putBoolean("Catapult limit switch", Sensors.getCatapultLimitSwitch().get());
 		SmartDashboard.putNumber("Left Encoder", Actuators.getLeftDriveMotor().getEncPosition());
 		SmartDashboard.putNumber("Right Encoder", Actuators.getRightDriveMotor().getEncPosition());
 	}
@@ -164,6 +164,13 @@ public class Robot extends IterativeRobot {
 
 	public void teleopPeriodic() {
 		Dash_StringPotentiometer.stringArmAngleMotorDash();
+		if (Gamepad.primary.getY()) {
+			Drive.drive(Gamepad.primary.getTriggers() / 2, Gamepad.primary.getLeftX() / 2);
+		} else {
+			Drive.drive(Gamepad.primary.getTriggers(), Gamepad.primary.getLeftX());
+		}
+		// Drive.drive(Gamepad.primary.getTriggers(),
+		// Gamepad.primary.getLeftX());
 
 		Drive.drive(Gamepad.primary.getTriggers(), Gamepad.primary.getLeftX());
 		if (Gamepad.primary.getB() && pastShift == false) {
@@ -174,6 +181,9 @@ public class Robot extends IterativeRobot {
 		}
 
 		Arm.moveArm(Gamepad.secondary.getLeftY());
+		SmartDashboard.putBoolean("MAX ARM LIMIT", Sensors.getArmMaxLimitSwitch().get());
+		SmartDashboard.putBoolean("MIN ARM LIMIT", Sensors.getArmMinLimitSwitch().get());
+
 		SmartDashboard.putData("Max Limit Switch", Sensors.getArmMaxLimitSwitch());
 		SmartDashboard.putData("Min Limit Switch", Sensors.getArmMinLimitSwitch());
 		SmartDashboard.putNumber("Left Encoder", Actuators.getLeftDriveMotor().getEncPosition());
@@ -208,7 +218,12 @@ public class Robot extends IterativeRobot {
 			Shooter.stopLoadShooter();
 		}
 		Shooter.shoot(Gamepad.primary.getA());
+		if (Gamepad.primary.getBack() && !Gamepad.primary.getA()) {
+			Shooter.stopLoadShooter();
+		}
+
 		SmartDashboard.putBoolean("Catapult limit switch", Sensors.getCatapultLimitSwitch().get());
+		SmartDashboard.putBoolean("Gear: ", Actuators.getDriveShiftPneumatic().get());
 		String gear;
 		if (Actuators.getDriveShiftPneumatic().get()) {
 			gear = "High";
@@ -223,5 +238,6 @@ public class Robot extends IterativeRobot {
 	 */
 	public void testPeriodic() {
 		LiveWindow.run();
+		Dash_Camera.cameras(Gamepad.secondary.getX());
 	}
 }
