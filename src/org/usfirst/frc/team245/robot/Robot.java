@@ -13,8 +13,8 @@ import com.github.adambots.stronghold2016.auton.Forward;
 import com.github.adambots.stronghold2016.auton.Left;
 import com.github.adambots.stronghold2016.auton.Right;
 import com.github.adambots.stronghold2016.auton.SuperRight;
-import com.github.adambots.stronghold2016.dash.Dash_Camera;
-import com.github.adambots.stronghold2016.dash.Dash_StringPotentiometer;
+import com.github.adambots.stronghold2016.dash.DashCamera;
+import com.github.adambots.stronghold2016.dash.DashStringPotentiometer;
 //import com.github.adambots.stronghold2016.camera.AutoTarget;
 //import com.github.adambots.stronghold2016.camera.Target;
 import com.github.adambots.stronghold2016.drive.Drive;
@@ -77,7 +77,7 @@ public class Robot extends IterativeRobot {
 		// Barrier activeB = (Barrier) barrierChooser.getSelected();
 		// SmartDashboard.putData("Barrier mode", barrierChooser);
 		// SmartDashboard.putBoolean("barrier working", activeB.running());
-		Dash_Camera.camerasInit();
+		DashCamera.camerasInit();
 		Actuators.getRingLight().set(true);
 
 	}
@@ -88,12 +88,12 @@ public class Robot extends IterativeRobot {
 	 * the robot is disabled.
 	 */
 	public void disabledInit() {
-		Actuators.getRingLight().set(false);
+//		Actuators.getRingLight().set(false);
 	}
 
 	public void disabledPeriodic() {
 		LiveWindow.run();
-		Dash_Camera.cameras(Gamepad.secondary.getX());
+		DashCamera.cameras(Gamepad.secondary.getX());
 		SmartDashboard.putBoolean("Catapult limit switch", Sensors.getCatapultLimitSwitch().get());
 		SmartDashboard.putNumber("Left Encoder", Actuators.getLeftDriveMotor().getEncPosition());
 		SmartDashboard.putNumber("Right Encoder", Actuators.getRightDriveMotor().getEncPosition());
@@ -115,12 +115,19 @@ public class Robot extends IterativeRobot {
 		Actuators.getRightDriveMotor().setEncPosition(0);
 		// autonomousCommand = (Command) chooser.getSelected();
 		Actuators.teleopInit();
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
+		
+		 String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
+		 switch(autoSelected) {
+		 	case "My Auto": 
+		 		//autonomousCommand = new MyAutoCommand(); 
+		 		break;
+		 		case "Default Auto":
+		 			
+		 		default:
+		 			//autonomousCommand = new ExampleCommand(); 
+		 			break;
+		}
+		 
 
 		// schedule the autonomous command (example)
 		// if (autonomousCommand != null)
@@ -147,6 +154,11 @@ public class Robot extends IterativeRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
+		if (autonomousCommand != null)
+			autonomousCommand.cancel();
+		//Arm.init();
+		pastShift = false;
+		
 		// if (autonomousCommand != null)
 		// autonomousCommand.cancel();
 		Arm.init();
@@ -163,7 +175,7 @@ public class Robot extends IterativeRobot {
 	 */
 
 	public void teleopPeriodic() {
-		Dash_StringPotentiometer.stringArmAngleMotorDash();
+		DashStringPotentiometer.stringArmAngleMotorDash();
 		if (Gamepad.primary.getY()) {
 			Drive.drive(Gamepad.primary.getTriggers() / 2, Gamepad.primary.getLeftX() / 2);
 		} else {
@@ -188,7 +200,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData("Min Limit Switch", Sensors.getArmMinLimitSwitch());
 		SmartDashboard.putNumber("Left Encoder", Actuators.getLeftDriveMotor().getEncPosition());
 		SmartDashboard.putNumber("Right Encoder", Actuators.getRightDriveMotor().getEncPosition());
-		Dash_Camera.cameras(Gamepad.secondary.getX());
+		DashCamera.cameras(Gamepad.secondary.getX());
 
 		// TODO: Check joystick mapping
 		// Scheduler.getInstance().run();
@@ -238,6 +250,6 @@ public class Robot extends IterativeRobot {
 	 */
 	public void testPeriodic() {
 		LiveWindow.run();
-		Dash_Camera.cameras(Gamepad.secondary.getX());
+		DashCamera.cameras(Gamepad.secondary.getX());
 	}
 }
