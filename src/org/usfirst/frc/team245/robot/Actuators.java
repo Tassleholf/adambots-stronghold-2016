@@ -36,7 +36,7 @@ public class Actuators {
 	private static final double RIGHT_DRIVE_KP = 1;
 	private static final double RIGHT_DRIVE_KI = 0;
 	private static final double RIGHT_DRIVE_KD = 0.025;
-	private static final boolean RIGHT_DRIVE_REVERSE_SENSOR = false;
+	private static final boolean RIGHT_DRIVE_REVERSE_SENSOR = false; //ADAMBOTS ONLY
 	
 	
 	//The PID constants for left drive motors
@@ -112,6 +112,7 @@ public class Actuators {
 		// Solenoids
 		driveShiftPneumatic = new Solenoid(0);
 		winchRatchetPneumatic = new Solenoid(1);
+//		ringLight = new Solenoid(-1);
 	}
 	
 	/**

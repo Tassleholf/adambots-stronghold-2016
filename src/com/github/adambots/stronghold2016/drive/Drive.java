@@ -3,6 +3,7 @@ package com.github.adambots.stronghold2016.drive;
 import org.usfirst.frc.team245.robot.Gamepad;
 
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team245.robot.Actuators;
 
@@ -73,6 +74,8 @@ public class Drive {
 		Actuators.getRightDriveMotor().changeControlMode(TalonControlMode.Position);
 		Actuators.getRightDriveMotor().set(rightDistance);
 		Actuators.getRightDriveMotor().enable();
+		SmartDashboard.putNumber("LEFT_ERROR", Actuators.getLeftDriveMotor().getError());
+		SmartDashboard.putNumber("Right_ERROR", Actuators.getRightDriveMotor().getError());
 	}
 	
 	

@@ -44,35 +44,50 @@ public class Arm {
 	 * @param speed
 	 */
 	public static void moveArm(double speed) {
-		//speed = -speed;
 		SmartDashboard.putNumber("Arm Position", Actuators.getArmAngleMotor().getPosition());
 		if (Gamepad.secondary.getBack()) {
 			Actuators.getArmAngleMotor().set(speed);
 		} else {
-			if ((Sensors.getArmMaxLimitSwitch().get()) && speed < 0) {
-				Actuators.getArmAngleMotor().set(speed);
-			} else if ((Sensors.getArmMinLimitSwitch().get()) && speed > 0) {
+			if ((Actuators.getArmAngleMotor().getPosition() < MAX_ARM_POSITION && Sensors.getArmMinLimitSwitch().get())
+					&& speed > 0) {
+				Actuators.getArmAngleMotor().set(speed / 2);
+			} else if ((Actuators.getArmAngleMotor().getPosition() > MIN_ARM_POSITION
+					&& Sensors.getArmMaxLimitSwitch().get()) && speed < 0) {
 				Actuators.getArmAngleMotor().set(speed);
 			} else {
 				Actuators.getArmAngleMotor().set(Actuators.STOP_MOTOR);
 
 			}
-//			if (!(/*
-//					 * Actuators.getArmAngleMotor().getPosition() >
-//					 * MAX_ARM_POSITION &&
-//					 */
-//			Sensors.getArmMaxLimitSwitch().get()) && speed > 0) {
-//				Actuators.getArmAngleMotor().set(speed);
-//			} else if (!(/*
-//							 * Actuators.getArmAngleMotor().getPosition() <
-//							 * MIN_ARM_POSITION &&
-//							 */
-//			Sensors.getArmMinLimitSwitch().get()) && speed < 0) {
-//				Actuators.getArmAngleMotor().set(speed);
-//			} else {
-//				Actuators.getArmAngleMotor().set(Actuators.STOP_MOTOR);
-//
-//			}
+			// speed = -speed;
+			SmartDashboard.putNumber("Arm Position", Actuators.getArmAngleMotor().getPosition());
+			if (Gamepad.secondary.getBack()) {
+				Actuators.getArmAngleMotor().set(speed);
+			} else {
+				if ((Sensors.getArmMaxLimitSwitch().get()) && speed < 0) {
+					Actuators.getArmAngleMotor().set(speed);
+				} else if ((Sensors.getArmMinLimitSwitch().get()) && speed > 0) {
+					Actuators.getArmAngleMotor().set(speed);
+				} else {
+					Actuators.getArmAngleMotor().set(Actuators.STOP_MOTOR);
+
+				}
+				// if (!(/*
+				// * Actuators.getArmAngleMotor().getPosition() >
+				// * MAX_ARM_POSITION &&
+				// */
+				// Sensors.getArmMaxLimitSwitch().get()) && speed > 0) {
+				// Actuators.getArmAngleMotor().set(speed);
+				// } else if (!(/*
+				// * Actuators.getArmAngleMotor().getPosition() <
+				// * MIN_ARM_POSITION &&
+				// */
+				// Sensors.getArmMinLimitSwitch().get()) && speed < 0) {
+				// Actuators.getArmAngleMotor().set(speed);
+				// } else {
+				// Actuators.getArmAngleMotor().set(Actuators.STOP_MOTOR);
+				//
+				// }
+			}
 		}
 	}
 
