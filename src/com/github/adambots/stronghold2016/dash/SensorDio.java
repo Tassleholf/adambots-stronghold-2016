@@ -18,9 +18,9 @@ public class SensorDio {
 	public static boolean getPhotoEyeI(){
 		return Sensors.getIntakeArmPhotoEye().get();
 	}
-	public static double getArmPot(){
-		return Sensors.getArmPot().get();
-	}
+	//public static double getArmPot(){
+	//	return Sensors.getArmPot().get();
+	//}
 	public static double getRobotGyro(){
 		return Sensors.getRobotGyro().getAngle();
 	}

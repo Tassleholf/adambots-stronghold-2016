@@ -20,22 +20,33 @@ public class FarLeft {
 	}
 
 	public void go() {
-		optimizer.leftClassCode(turnamountL, turnamountR, driveDistance, finishDistance);
-		/**
-		 * turned = Actuators.getLeftDriveMotor().getError(); inPosition =
-		 * Actuators.getLeftDriveMotor().getError(); turned2 =
-		 * Actuators.getLeftDriveMotor().getError(); turned =
-		 * Actuators.getLeftDriveMotor().getError(); if (Math.abs(turned) < 100)
-		 * Drive.drive(Actuators.STOP_MOTOR); else{ Drive.driveWithPID(
-		 * -turnamountL, turnamountR); } if (Math.abs(inPosition) > 100 &&
-		 * Math.abs(turned) < 100) Drive.driveWithPID(driveDistance,
-		 * driveDistance); else{ Drive.drive(Actuators.STOP_MOTOR); }
-		 * 
-		 * if (Math.abs(inPosition) < 100 && Math.abs(turned2) > 100)
-		 * Drive.driveWithPID(turnamountL, -turnamountR); else{
-		 * Drive.drive(Actuators.STOP_MOTOR); } if (Math.abs(inPosition) < 100
-		 * && Math.abs(turned2) < 100) Drive.driveWithPID(finishDistance,
-		 * finishDistance); else{ Drive.drive(Actuators.STOP_MOTOR); }
-		 **/
+//		optimizer.leftClassCode(turnamountL, turnamountR, driveDistance, finishDistance);
+//
+//		turned = Actuators.getLeftDriveMotor().getError();
+//		inPosition = Actuators.getLeftDriveMotor().getError();
+//		turned2 = Actuators.getLeftDriveMotor().getError();
+//		turned = Actuators.getLeftDriveMotor().getError();
+//		if (Math.abs(turned) < 100)
+//			Drive.drive(Actuators.STOP_MOTOR);
+//		else {
+//			Drive.driveWithPID(-turnamountL, turnamountR);
+//		}
+//		if (Math.abs(inPosition) > 100 && Math.abs(turned) < 100)
+//			Drive.driveWithPID(driveDistance, driveDistance);
+//		else {
+//			Drive.drive(Actuators.STOP_MOTOR);
+//		}
+//
+//		if (Math.abs(inPosition) < 100 && Math.abs(turned2) > 100)
+//			Drive.driveWithPID(turnamountL, -turnamountR);
+//		else {
+//			Drive.drive(Actuators.STOP_MOTOR);
+//		}
+//		if (Math.abs(inPosition) < 100 && Math.abs(turned2) < 100)
+//			Drive.driveWithPID(finishDistance, finishDistance);
+//		else {
+//			Drive.drive(Actuators.STOP_MOTOR);
+//		}
+
 	}
 }

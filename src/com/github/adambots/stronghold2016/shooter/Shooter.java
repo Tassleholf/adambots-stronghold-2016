@@ -22,7 +22,7 @@ public class Shooter {
 	 * Initializes PID for arm and checks if shooter is cocked
 	 */
 	public static void init() {
-		armPID = new PIDController(Kp, Ki, Kd, Sensors.getArmPot(), Actuators.getArmAngleMotor());
+	//	armPID = new PIDController(Kp, Ki, Kd, Sensors.getArmPot(), Actuators.getArmAngleMotor());
 	}
 
 	/**
@@ -30,7 +30,7 @@ public class Shooter {
 	 */
 	public static void stopLoadShooter() {
 		Actuators.getArmAngleMotor().set(Actuators.STOP_MOTOR);
-		Actuators.getArmAngleMotor().disable();
+//		Actuators.getArmAngleMotor().disable();
 	}
 
 	/**

@@ -1,7 +1,10 @@
 package com.github.adambots.stronghold2016.arm;
 
 import org.usfirst.frc.team245.robot.Actuators;
+import org.usfirst.frc.team245.robot.Gamepad;
 import org.usfirst.frc.team245.robot.Sensors;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * All arm code
@@ -10,14 +13,13 @@ import org.usfirst.frc.team245.robot.Sensors;
 public class Arm {
 	static double MAX_ARM_POSITION = 5;
 	static double MIN_ARM_POSITION = 0;
-	
+
 	/**
 	 * Initializes arm
 	 */
 	public static void init() {
 		Actuators.getWinchRatchetPneumatic().set(false);
 	}
-
 
 	/**
 	 * Runs intake
@@ -42,13 +44,35 @@ public class Arm {
 	 * @param speed
 	 */
 	public static void moveArm(double speed) {
-		if (!(Actuators.getArmAngleMotor().getPosition() > MAX_ARM_POSITION || !(Sensors.getArmMaxLimitSwitch().get())) && speed < 0) {
-			Actuators.getArmAngleMotor().set(.5*speed);
-		} else if (!(Actuators.getArmAngleMotor().getPosition() < MIN_ARM_POSITION || !(Sensors.getArmMinLimitSwitch().get())) && speed > 0) {
-			Actuators.getArmAngleMotor().set(.5*speed);
+		//speed = -speed;
+		SmartDashboard.putNumber("Arm Position", Actuators.getArmAngleMotor().getPosition());
+		if (Gamepad.secondary.getBack()) {
+			Actuators.getArmAngleMotor().set(speed);
 		} else {
-			Actuators.getArmAngleMotor().set(Actuators.STOP_MOTOR);
+			if ((Sensors.getArmMaxLimitSwitch().get()) && speed < 0) {
+				Actuators.getArmAngleMotor().set(speed);
+			} else if ((Sensors.getArmMinLimitSwitch().get()) && speed > 0) {
+				Actuators.getArmAngleMotor().set(speed);
+			} else {
+				Actuators.getArmAngleMotor().set(Actuators.STOP_MOTOR);
 
+			}
+//			if (!(/*
+//					 * Actuators.getArmAngleMotor().getPosition() >
+//					 * MAX_ARM_POSITION &&
+//					 */
+//			Sensors.getArmMaxLimitSwitch().get()) && speed > 0) {
+//				Actuators.getArmAngleMotor().set(speed);
+//			} else if (!(/*
+//							 * Actuators.getArmAngleMotor().getPosition() <
+//							 * MIN_ARM_POSITION &&
+//							 */
+//			Sensors.getArmMinLimitSwitch().get()) && speed < 0) {
+//				Actuators.getArmAngleMotor().set(speed);
+//			} else {
+//				Actuators.getArmAngleMotor().set(Actuators.STOP_MOTOR);
+//
+//			}
 		}
 	}
 
@@ -71,28 +95,31 @@ public class Arm {
 			Actuators.getWinchRatchetPneumatic().set(false);
 		}
 	}
-	public static void release(){
+
+	public static void release() {
 		Actuators.getWinchRatchetPneumatic().set(!Actuators.getWinchRatchetPneumatic().get());
 	}
+
 	public static void climb(double speed) {
-		//if (!Actuators.getWinchRatchetPneumatic().get() && speed > 0) {
-			//Actuators.getWinchRatchetPneumatic().set(true);
-			//Actuators.getArmWinchMotor1().set(-Actuators.MAX_MOTOR_SPEED);
-			//Actuators.getArmWinchMotor2().set(-Actuators.MAX_MOTOR_SPEED);
+		// if (!Actuators.getWinchRatchetPneumatic().get() && speed > 0) {
+		// Actuators.getWinchRatchetPneumatic().set(true);
+		// Actuators.getArmWinchMotor1().set(-Actuators.MAX_MOTOR_SPEED);
+		// Actuators.getArmWinchMotor2().set(-Actuators.MAX_MOTOR_SPEED);
 		if (speed > 0) {
 			Actuators.getArmWinchMotor1().set(speed);
 			Actuators.getArmWinchMotor2().set(-speed);
-		//}else if (!Actuators.getWinchRatchetPneumatic().get() && speed < 0) {
-			//Actuators.getWinchRatchetPneumatic().set(true);
-			//Actuators.getArmWinchMotor1().set(-Actuators.MIN_MOTOR_SPEED);
-			//Actuators.getArmWinchMotor2().set(-Actuators.MIN_MOTOR_SPEED);
-		} else if ( speed < 0) {
+			// }else if (!Actuators.getWinchRatchetPneumatic().get() && speed <
+			// 0) {
+			// Actuators.getWinchRatchetPneumatic().set(true);
+			// Actuators.getArmWinchMotor1().set(-Actuators.MIN_MOTOR_SPEED);
+			// Actuators.getArmWinchMotor2().set(-Actuators.MIN_MOTOR_SPEED);
+		} else if (speed < 0) {
 			Actuators.getArmWinchMotor1().set(speed);
 			Actuators.getArmWinchMotor2().set(-speed);
-		} else { 
+		} else {
 			Actuators.getArmWinchMotor1().set(Actuators.STOP_MOTOR);
 			Actuators.getArmWinchMotor2().set(Actuators.STOP_MOTOR);
-			//Actuators.getWinchRatchetPneumatic().set(false);
+			// Actuators.getWinchRatchetPneumatic().set(false);
 		}
 	}
 
