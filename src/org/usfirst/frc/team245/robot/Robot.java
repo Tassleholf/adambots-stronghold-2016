@@ -94,6 +94,7 @@ public class Robot extends IterativeRobot {
 	public void disabledPeriodic() {
 		LiveWindow.run();
 		Dash_Camera.cameras(Gamepad.secondary.getX());
+		SmartDashboard.putBoolean("Catapult limit switch", Sensors.getCatapultLimitSwitch().get());
 	}
 
 	/**
@@ -129,8 +130,8 @@ public class Robot extends IterativeRobot {
 	 */
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
-		
-		//autonomousCommand.start();
+		Forward.go();
+//		autonomousCommand.start();
 //		AutonMain.test();
 		
 
@@ -161,8 +162,13 @@ public class Robot extends IterativeRobot {
 
 	public void teleopPeriodic() {
 		Dash_StringPotentiometer.stringArmAngleMotorDash();
+		if(Gamepad.primary.getY()){
+			Drive.drive(Gamepad.primary.getTriggers()/2, Gamepad.primary.getLeftX()/2);
+		}else{
+			Drive.drive(Gamepad.primary.getTriggers(), Gamepad.primary.getLeftX());
+		}
+//		Drive.drive(Gamepad.primary.getTriggers(), Gamepad.primary.getLeftX());
 		
-		Drive.drive(Gamepad.primary.getTriggers(), Gamepad.primary.getLeftX());
 		if (Gamepad.primary.getB() && pastShift == false) {
 			Drive.shift();
 			pastShift = Gamepad.primary.getB();
@@ -171,8 +177,8 @@ public class Robot extends IterativeRobot {
 		}
 		
 		Arm.moveArm(Gamepad.secondary.getLeftY());
-		SmartDashboard.putData("Max Limit Switch", Sensors.getArmMaxLimitSwitch());
-		SmartDashboard.putData("Min Limit Switch", Sensors.getArmMinLimitSwitch());
+		SmartDashboard.putBoolean("MAX ARM LIMIT", Sensors.getArmMaxLimitSwitch().get());
+		SmartDashboard.putBoolean("MIN ARM LIMIT", Sensors.getArmMinLimitSwitch().get());
 
 		
 		Dash_Camera.cameras(Gamepad.secondary.getX());
@@ -207,13 +213,7 @@ public class Robot extends IterativeRobot {
 		}
 		
 		SmartDashboard.putBoolean("Catapult limit switch", Sensors.getCatapultLimitSwitch().get());
-		String gear;
-		if(Actuators.getDriveShiftPneumatic().get()){
-			gear = "High";
-		} else {
-			gear = "Low";
-		}
-		SmartDashboard.putString("Gear: ", gear);
+		SmartDashboard.putBoolean("Gear: ", Actuators.getDriveShiftPneumatic().get());
 	}
 
 	/**
@@ -221,5 +221,6 @@ public class Robot extends IterativeRobot {
 	 */
 	public void testPeriodic() {
 		LiveWindow.run();
+		Dash_Camera.cameras(Gamepad.secondary.getX());
 	}
 }

@@ -49,11 +49,11 @@ public class Arm {
 		if(Gamepad.secondary.getBack()){
 			Actuators.getArmAngleMotor().set(speed);
 		}else{
-			if (!(Actuators.getArmAngleMotor().getPosition() > MAX_ARM_POSITION && 
-					Sensors.getArmMaxLimitSwitch().get()) && speed > 0) {
-				Actuators.getArmAngleMotor().set(speed);
-			} else if (!(Actuators.getArmAngleMotor().getPosition() < MIN_ARM_POSITION && 
-					Sensors.getArmMinLimitSwitch().get()) && speed < 0) {
+			if ((Actuators.getArmAngleMotor().getPosition() < MAX_ARM_POSITION && 
+					Sensors.getArmMinLimitSwitch().get()) && speed > 0) {
+				Actuators.getArmAngleMotor().set(speed/2);
+			} else if ((Actuators.getArmAngleMotor().getPosition() > MIN_ARM_POSITION && 
+					Sensors.getArmMaxLimitSwitch().get()) && speed < 0) {
 				Actuators.getArmAngleMotor().set(speed);
 			} else {
 				Actuators.getArmAngleMotor().set(Actuators.STOP_MOTOR);

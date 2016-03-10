@@ -6,7 +6,8 @@ import org.usfirst.frc.team245.robot.Sensors;
 import com.github.adambots.stronghold2016.drive.Drive;
 
 public class Forward {
-	static double finishDistance = -48, allotedError = 60;
+	static double finishDistance = 200, allotedError = 60;
+//	static double finishDistance = 48, allotedError = 60;
 	static boolean reset = false, isDone;
 
 	//Position_Optimizer optimizer;
