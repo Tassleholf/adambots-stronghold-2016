@@ -25,8 +25,6 @@ public class AutoTarget {
 	private static double[] centerY;
 	private static double[] height;
 	private static double[] width;
-	private static double[] area;
-	private static double[] distance;
 	
 	
 	private static NetworkTable targetTable;
@@ -43,8 +41,6 @@ public class AutoTarget {
 	private static void getTargetData(){
 		centerX = targetTable.getNumberArray(Target.TABLE_CENTER_X, DEFAULT_VALUE);
 		centerY = targetTable.getNumberArray(Target.TABLE_CENTER_Y, DEFAULT_VALUE);
-		area = targetTable.getNumberArray(Target.TABLE_AREA, DEFAULT_VALUE);
-		distance = targetTable.getNumberArray(Target.TABLE_DISTANCE, DEFAULT_VALUE);
 		height = targetTable.getNumberArray(Target.TABLE_HEIGHT, DEFAULT_VALUE);
 		width = targetTable.getNumberArray(Target.TABLE_WIDTH, DEFAULT_VALUE);
 	}

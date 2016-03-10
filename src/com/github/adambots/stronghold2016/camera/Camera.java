@@ -26,10 +26,10 @@ public class Camera {
 
 	//Contour filtering constants
 	private static final double MIN_ASPECT_RATIO = 0;
-	private static final int MIN_CONTOUR_WIDTH = 50;
-	private static final int MIN_CONTOUR_HEIGHT = 20;
-	private static final int MAX_CONTOUR_WIDTH = 200;
-	private static final int MAX_CONTOUR_HEIGHT = 400;
+	private static final int MIN_CONTOUR_WIDTH = 100;
+	private static final int MIN_CONTOUR_HEIGHT = 100;
+	private static final int MAX_CONTOUR_WIDTH = 500;
+	private static final int MAX_CONTOUR_HEIGHT = 500;
 	private static final int MAX_AREA = -1;
 	private static final int MIN_AREA = -1;
 
@@ -74,7 +74,10 @@ public class Camera {
 	}
 
 	public static boolean openStream(){
-		videoCapture.open(WEB_CAM);
+//TODO:Testing from previous images		videoCapture.open(WEB_CAM);
+		
+		videoCapture.open("/Users/robinonsay/Documents/Java-workspace/adambots-stronghold-2016/tesy.png");
+		
 		//videoCapture.set(PROP_IMAGE_WIDTH, IMAGE_WIDTH);
 		//videoCapture.set(PROP_IMAGE_HEIGHT, IMAGE_HEIGHT);
 		return videoCapture.isOpened();
@@ -107,8 +110,9 @@ public class Camera {
 	}
 
 	public static Target getTarget(){
-		Rect rec = Imgproc.boundingRect(getBestContour());
-
+		MatOfPoint bestContour = getBestContour();
+		Rect rec = Imgproc.boundingRect(bestContour);
+		Imgproc.rectangle(matOriginal, rec.br(), rec.tl(), RED);
 		int centerX = rec.width/2 + rec.x;
 		int centerY = rec.height/2 + rec.y;
 		double y = rec.br().y + rec.height / 2;
@@ -118,12 +122,14 @@ public class Camera {
 		//TODO: TEST CODE---
 		Point center = new Point(rec.br().x-rec.width / 2 - 15,rec.br().y - rec.height / 2);
 		Point centerw = new Point(rec.br().x-rec.width / 2 - 15,rec.br().y - rec.height / 2 - 20);
-		Imgproc.putText(matOriginal, ""+(int)distance, center, Core.FONT_HERSHEY_PLAIN, 1, RED);
+		Imgproc.putText(matOriginal, "HELLO WORLD", center, Core.FONT_HERSHEY_PLAIN, 1, RED);
 		Imgproc.putText(matOriginal, "", centerw, Core.FONT_HERSHEY_PLAIN, 1, RED);
 		Imgcodecs.imwrite("output.png", matOriginal);
 		//---
 		return new Target(centerX, centerY, rec.width * rec.height, distance, rec.height, rec.width);
 	}
+	
+	
 	public static ArrayList<MatOfPoint> getContours(){
 		// Grabs image from stream
 		videoCapture.read(matOriginal);
@@ -134,7 +140,7 @@ public class Camera {
 		//TODO:TEST CODE---
 		Imgcodecs.imwrite("original.png", matOriginal);
 		Imgcodecs.imwrite("hsv.png", matHSV);
-		Imgcodecs.imwrite("thresh1.png", matThresh);
+		Imgcodecs.imwrite("thresh.png", matThresh);
 		//---
 		ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
 		contours.clear();
@@ -152,38 +158,33 @@ public class Camera {
 			MatOfPoint contour = (MatOfPoint) iterator.next();
 			Rect rec = Imgproc.boundingRect(contour);
 
-			if((rec.height < MIN_CONTOUR_HEIGHT || rec.width < MIN_CONTOUR_WIDTH
-					||rec.height > MAX_CONTOUR_HEIGHT || rec.width > MAX_CONTOUR_WIDTH) &&
-					(rec.width*rec.height < MAX_AREA || 
-					rec.width*rec.height > MIN_AREA)){
+			if(isNotTarget(rec)){
 				iterator.remove();
-				continue;
+				System.out.println("Remove");
+				rec = null;
+//				continue;
 			}
-			//			float aspect = (float)rec.width/(float)rec.height;
-			//			if(aspect < MIN_ASPECT_RATIO)
-			//				iterator.remove();
-			if(iterator.hasNext()){
-				MatOfPoint postContour = (MatOfPoint) iterator.next();
-				Rect postRec = Imgproc.boundingRect(postContour);
-				//TODO:TEST CODE---
-				System.out.println("width : height-> "+postRec.width + " : "+postRec.height);
-				//---
+			if(iterator.hasNext() && rec != null){
+				System.out.println("width : height-> "+rec.width + " : "+rec.height + " "+ rec.x + " : " + rec.y);
 			}
 		}
-
+//		System.out.println(contours);
 		return contours;
 	}
-
+	private static boolean isNotTarget(Rect rec){
+		boolean isTarget = rec.height < MIN_CONTOUR_HEIGHT || rec.width < MIN_CONTOUR_WIDTH;
+		isTarget = isTarget || rec.height > MAX_CONTOUR_HEIGHT || rec.width > MAX_CONTOUR_WIDTH;
+		return isTarget;
+	}
 	public static MatOfPoint getBestContour() {
 
 		ArrayList<MatOfPoint> contours = getContours();
-		MatOfPoint bestContour = null;
-		MatOfPoint lastContour = (!contours.isEmpty())?contours.remove(0):null;
+		MatOfPoint bestContour = (!contours.isEmpty())?contours.remove(0):null;
+		MatOfPoint lastContour = bestContour;
 
 		for(MatOfPoint mop : contours){
 			Rect rec = Imgproc.boundingRect(mop);
 			Rect lastRec = Imgproc.boundingRect(lastContour);
-			Imgproc.rectangle(matOriginal, rec.br(), rec.tl(), BLACK);
 			float thisAspect = (float)rec.width/(float)rec.height;
 			float lastAspect = (float)lastRec.width/(float)lastRec.height;
 
