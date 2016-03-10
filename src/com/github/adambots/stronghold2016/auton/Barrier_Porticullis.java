@@ -21,15 +21,16 @@ public class Barrier_Porticullis extends Barrier {
 
 		}
 		if (position == true)
-			if (Sensors.getStringPotArmAngle() < raise) {
-				Arm.moveArm(armIncrement);// Arm speed may change
-			} else {
-				Drive.drive(speed);
-				// needs positioning
-				if (Sensors.getRobotGyro().getAngle() > -tolerance) {
+			// if (Sensors.getStringPotArmAngle() < raise) {
+			Arm.moveArm(armIncrement);// Arm speed may change
+		// }
+		else {
+			Drive.drive(speed);
+			// needs positioning
+			if (Sensors.getRobotGyro().getAngle() > -tolerance) {
 
-				}
 			}
+		}
 		// needs positioning
 		if (Sensors.getRobotGyro().getAngle() > -tolerance && Sensors.getRobotGyro().getAngle() < tolerance) {
 			counter++;
