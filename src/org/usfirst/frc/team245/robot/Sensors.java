@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Solenoid;
 
 /**
  * All Robot sensors
@@ -17,39 +18,47 @@ public class Sensors {
 	private static DigitalInput catapultLimitSwitch;
 	private static DigitalInput armMaxLimitSwitch;
 	private static DigitalInput armMinLimitSwitch;
+
 	// Analog
 	private static AnalogPotentiometer armPot;
 	private static AnalogGyro robotGyro;
 	private static double stringPotArmDist;
 	private static double stringPotChassisDist;
-
+	
 	/**
 	 * Initializes all sensors
 	 */
 	public static void init() {
 		// Digital
-		winchEncoder = new Encoder(0, 0);
-		intakeArmPhotoEye = new DigitalInput(0);
-		boulderCanLaunchPhotoEye = new DigitalInput(0);
-		catapultLimitSwitch = new DigitalInput(0);
-
+		winchEncoder = new Encoder(0, 1);
+		try{
+		intakeArmPhotoEye = new DigitalInput(5);
+		boulderCanLaunchPhotoEye = new DigitalInput(6);
+		}
+		catch(Exception e){
+			System.out.println(e.toString());
+		}
+		catapultLimitSwitch = new DigitalInput(4);
+		ringLight = new Solenoid(3);
 		// Analog
-		armPot = new AnalogPotentiometer(0, 360, 0);
-		robotGyro = new AnalogGyro(0);
+		armPot = new AnalogPotentiometer(1, 360, 0);
+		//robotGyro = new AnalogGyro(0);
+		armMaxLimitSwitch = new DigitalInput(3);
+		armMinLimitSwitch = new DigitalInput(2);
 	}
 
 	/**
-	 * @return the armMaxLimitSwitch
+	 * @return the armMaxLimitSwitch (invert when using .get())
 	 */
 	public static DigitalInput getArmMaxLimitSwitch() {
-		return armMaxLimitSwitch;
+		return armMaxLimitSwitch; 
 	}
 
 	/**
-	 * @return the armMinLimitSwitch
+	 * @return the armMinLimitSwitch (invert when using .get())
 	 */
 	public static DigitalInput getArmMinLimitSwitch() {
-		return armMinLimitSwitch;
+		return armMinLimitSwitch; 
 	}
 
 	/**
@@ -105,5 +114,7 @@ public class Sensors {
 		return Math.acos((Math.pow(stringPotArmDist, 2) + Math.pow(stringPotChassisDist, 2) - Math.pow(displace, 2))
 				/ (2 * stringPotArmDist * stringPotChassisDist));
 	}
+	
+
 
 }
