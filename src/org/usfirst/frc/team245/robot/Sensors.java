@@ -38,7 +38,7 @@ public class Sensors {
 			System.out.println(e.toString());
 		}
 		catapultLimitSwitch = new DigitalInput(4);
-		ringLight = new Solenoid(3);
+//		ringLight = new Solenoid(3);
 		// Analog
 		// armPot = new AnalogPotentiometer(1, 360, 0);
 		// robotGyro = new AnalogGyro(0);
