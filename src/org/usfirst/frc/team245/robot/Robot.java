@@ -78,7 +78,7 @@ public class Robot extends IterativeRobot {
 		// SmartDashboard.putData("Barrier mode", barrierChooser);
 		// SmartDashboard.putBoolean("barrier working", activeB.running());
 		Dash_Camera.camerasInit();
-		// Actuators.getRingLight().set(true);
+		Actuators.getRingLight().set(true);
 
 	}
 
@@ -88,7 +88,7 @@ public class Robot extends IterativeRobot {
 	 * the robot is disabled.
 	 */
 	public void disabledInit() {
-		// Actuators.getRingLight().set(false);
+		Actuators.getRingLight().set(false);
 	}
 
 	public void disabledPeriodic() {
