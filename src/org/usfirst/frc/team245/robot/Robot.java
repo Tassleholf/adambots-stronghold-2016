@@ -6,17 +6,19 @@ import com.github.adambots.stronghold2016.auton.AutonMain;
 import com.github.adambots.stronghold2016.auton.Barrier_ChevalDeFrise;
 import com.github.adambots.stronghold2016.auton.Barrier_Drawbridge;
 import com.github.adambots.stronghold2016.auton.Barrier_RoughTerrain;
+import com.github.adambots.stronghold2016.auton.Default;
 import com.github.adambots.stronghold2016.auton.FarLeft;
 import com.github.adambots.stronghold2016.auton.FarRight;
 import com.github.adambots.stronghold2016.auton.Forward;
 import com.github.adambots.stronghold2016.auton.Left;
 import com.github.adambots.stronghold2016.auton.Right;
 import com.github.adambots.stronghold2016.auton.SuperRight;
-import com.github.adambots.stronghold2016.dash.Dash_Camera;
-import com.github.adambots.stronghold2016.dash.Dash_StringPotentiometer;
+import com.github.adambots.stronghold2016.dash.DashCamera;
+import com.github.adambots.stronghold2016.dash.DashStringPotentiometer;
 //import com.github.adambots.stronghold2016.camera.AutoTarget;
 //import com.github.adambots.stronghold2016.camera.Target;
 import com.github.adambots.stronghold2016.drive.Drive;
+import com.github.adambots.stronghold2016.shooter.Shooter;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -48,33 +50,35 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		Actuators.init();
 		chooser = new SendableChooser();
-		//barrierChooser = new SendableChooser();
+		// barrierChooser = new SendableChooser();
 		compressor = new Compressor();
-		chooser.addDefault("Forward", new Forward());
+		chooser.addDefault("None", new Default());
 		chooser.addObject("left two positions", new FarLeft());
 		chooser.addObject("left one positions", new Left());
 		chooser.addObject("right one positions", new Right());
 		chooser.addObject("right two positions", new FarRight());
 		chooser.addObject("right three positions", new SuperRight());
+		chooser.addObject("Forward", new Forward());
 		// TODO: Uncomment inits
-		 //Sensors.init();
-		// Shooter.init();
-		
-		
+		Sensors.init();
+		Shooter.init();
+
 		Drive.init();// does not have anything
 		// AutoTarget.init();//does not contain anything
 
-		chooser.addObject("My Auto", new Forward());
 		SmartDashboard.putData("Auto mode", chooser);
 
-		/*barrierChooser.addDefault("ChevalDeFrise", new Barrier_ChevalDeFrise());
-		barrierChooser.addObject("Drawbridge", new Barrier_Drawbridge());
-		barrierChooser.addObject("RoughTerrain", new Barrier_RoughTerrain());*/
-		//Barrier activeB = (Barrier) barrierChooser.getSelected();
-		//SmartDashboard.putData("Barrier mode", barrierChooser);
-		//SmartDashboard.putBoolean("barrier working", activeB.running());
-		//Actuators.init();
-		//Dash_Camera.camerasInit();
+		/*
+		 * barrierChooser.addDefault("ChevalDeFrise", new
+		 * Barrier_ChevalDeFrise()); barrierChooser.addObject("Drawbridge", new
+		 * Barrier_Drawbridge()); barrierChooser.addObject("RoughTerrain", new
+		 * Barrier_RoughTerrain());
+		 */
+		// Barrier activeB = (Barrier) barrierChooser.getSelected();
+		// SmartDashboard.putData("Barrier mode", barrierChooser);
+		// SmartDashboard.putBoolean("barrier working", activeB.running());
+		DashCamera.camerasInit();
+		Actuators.getRingLight().set(true);
 
 	}
 
@@ -84,11 +88,15 @@ public class Robot extends IterativeRobot {
 	 * the robot is disabled.
 	 */
 	public void disabledInit() {
-
+//		Actuators.getRingLight().set(false);
 	}
 
 	public void disabledPeriodic() {
-
+		LiveWindow.run();
+		DashCamera.cameras(Gamepad.secondary.getX());
+		SmartDashboard.putBoolean("Catapult limit switch", Sensors.getCatapultLimitSwitch().get());
+		SmartDashboard.putNumber("Left Encoder", Actuators.getLeftDriveMotor().getEncPosition());
+		SmartDashboard.putNumber("Right Encoder", Actuators.getRightDriveMotor().getEncPosition());
 	}
 
 	/**
@@ -105,18 +113,25 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		Actuators.getLeftDriveMotor().setEncPosition(0);
 		Actuators.getRightDriveMotor().setEncPosition(0);
-		//autonomousCommand = (Command) chooser.getSelected();
+		// autonomousCommand = (Command) chooser.getSelected();
 		Actuators.teleopInit();
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
+		
+		 String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
+		 switch(autoSelected) {
+		 	case "My Auto": 
+		 		//autonomousCommand = new MyAutoCommand(); 
+		 		break;
+		 		case "Default Auto":
+		 			
+		 		default:
+		 			//autonomousCommand = new ExampleCommand(); 
+		 			break;
+		}
+		 
 
 		// schedule the autonomous command (example)
-		//if (autonomousCommand != null)
-		//	autonomousCommand.start();
+		// if (autonomousCommand != null)
+		// autonomousCommand.start();
 	}
 
 	/**
@@ -124,14 +139,14 @@ public class Robot extends IterativeRobot {
 	 */
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
-		
-		//autonomousCommand.start();
-		AutonMain.test();
-		
+		Forward.go();
+		// autonomousCommand.start();
+		// AutonMain.test();
 
 	}
 
 	private boolean pastShift;
+	private boolean toggled;
 
 	public void teleopInit() {
 
@@ -139,15 +154,20 @@ public class Robot extends IterativeRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
+		if (autonomousCommand != null)
+			autonomousCommand.cancel();
+		//Arm.init();
+		pastShift = false;
+		
 		// if (autonomousCommand != null)
 		// autonomousCommand.cancel();
-		// Arm.init();
-		//pastShift = false;
+		Arm.init();
+		// pastShift = false;
 
 		// TODO:TEST CODE
 
 		Actuators.teleopInit();
-		
+
 	}
 
 	/**
@@ -155,45 +175,74 @@ public class Robot extends IterativeRobot {
 	 */
 
 	public void teleopPeriodic() {
-		Dash_StringPotentiometer.stringArmAngleMotorDash();
-		
-		Drive.drive(Gamepad.primary.getTriggers(), Gamepad.primary.getLeftX());
-		if (Gamepad.primary.getLB() && pastShift == false) {
-			Drive.shift();
-			pastShift = Gamepad.primary.getLB();
-		} else if (!Gamepad.primary.getLB()) {
-			pastShift = Gamepad.primary.getLB();
+		DashStringPotentiometer.stringArmAngleMotorDash();
+		if (Gamepad.primary.getY()) {
+			Drive.drive(Gamepad.primary.getTriggers() / 2, Gamepad.primary.getLeftX() / 2);
+		} else {
+			Drive.drive(Gamepad.primary.getTriggers(), Gamepad.primary.getLeftX());
 		}
-		
+		// Drive.drive(Gamepad.primary.getTriggers(),
+		// Gamepad.primary.getLeftX());
+
+		Drive.drive(Gamepad.primary.getTriggers(), Gamepad.primary.getLeftX());
+		if (Gamepad.primary.getB() && pastShift == false) {
+			Drive.shift();
+			pastShift = Gamepad.primary.getB();
+		} else if (!Gamepad.primary.getB()) {
+			pastShift = Gamepad.primary.getB();
+		}
+
 		Arm.moveArm(Gamepad.secondary.getLeftY());
-		
-		Dash_Camera.cameras(Gamepad.secondary.getX());
+		SmartDashboard.putBoolean("MAX ARM LIMIT", Sensors.getArmMaxLimitSwitch().get());
+		SmartDashboard.putBoolean("MIN ARM LIMIT", Sensors.getArmMinLimitSwitch().get());
+
+		SmartDashboard.putData("Max Limit Switch", Sensors.getArmMaxLimitSwitch());
+		SmartDashboard.putData("Min Limit Switch", Sensors.getArmMinLimitSwitch());
+		SmartDashboard.putNumber("Left Encoder", Actuators.getLeftDriveMotor().getEncPosition());
+		SmartDashboard.putNumber("Right Encoder", Actuators.getRightDriveMotor().getEncPosition());
+		DashCamera.cameras(Gamepad.secondary.getX());
 
 		// TODO: Check joystick mapping
 		// Scheduler.getInstance().run();
 		// TODO: TEST ARM CODE
-		// Arm.moveArm(Gamepad.secondary.getRightY());
 		//
-		// Arm.rollers(Gamepad.primary.getA(), Gamepad.primary.getB());
+		Arm.rollers(Gamepad.secondary.getA(), Gamepad.secondary.getB());
 		//
-		// Arm.climb(Gamepad.secondary.getX());
+		if (Gamepad.secondary.getRB() && toggled == false) {
+			Arm.release();
+
+			toggled = Gamepad.secondary.getRB();
+		} else if (!Gamepad.secondary.getRB()) {
+			toggled = Gamepad.secondary.getRB();
+		}
+
+		if (Gamepad.secondary.getY()) {
+			// Arm.climb(Gamepad.secondary.getY());
+		} else {
+			// Arm.climb(Gamepad.secondary.getRightY());
+		}
 
 		// TEST CODE
 		// *****************************************************************
 
 		// ***************************************************************************
-		// if(Gamepad.primary.getRB()){
-		// //if using PID in CANTalons
-		// //Shooter.loadShooter();
-		// //if using PID class on roborio
-		// isShooterLoaded = Shooter.loadShooter(0);
-		// }else if(!isShooterLoaded){
-		// isShooterLoaded = Shooter.loadShooter(0);
-		// }
-		// else{
-		// Shooter.stopLoadShooter();
-		// }
+		if (Gamepad.primary.getBack() && !Gamepad.primary.getA()) {
+			Shooter.stopLoadShooter();
+		}
+		Shooter.shoot(Gamepad.primary.getA());
+		if (Gamepad.primary.getBack() && !Gamepad.primary.getA()) {
+			Shooter.stopLoadShooter();
+		}
 
+		SmartDashboard.putBoolean("Catapult limit switch", Sensors.getCatapultLimitSwitch().get());
+		SmartDashboard.putBoolean("Gear: ", Actuators.getDriveShiftPneumatic().get());
+		String gear;
+		if (Actuators.getDriveShiftPneumatic().get()) {
+			gear = "High";
+		} else {
+			gear = "Low";
+		}
+		SmartDashboard.putString("Gear: ", gear);
 	}
 
 	/**
@@ -201,5 +250,6 @@ public class Robot extends IterativeRobot {
 	 */
 	public void testPeriodic() {
 		LiveWindow.run();
+		DashCamera.cameras(Gamepad.secondary.getX());
 	}
 }

@@ -22,7 +22,7 @@ public class Shooter {
 	 * Initializes PID for arm and checks if shooter is cocked
 	 */
 	public static void init() {
-		armPID = new PIDController(Kp, Ki, Kd, Sensors.getArmPot(), Actuators.getArmAngleMotor());
+	//	armPID = new PIDController(Kp, Ki, Kd, Sensors.getArmPot(), Actuators.getArmAngleMotor());
 	}
 
 	/**
@@ -30,7 +30,7 @@ public class Shooter {
 	 */
 	public static void stopLoadShooter() {
 		Actuators.getArmAngleMotor().set(Actuators.STOP_MOTOR);
-		Actuators.getArmAngleMotor().disable();
+//		Actuators.getArmAngleMotor().disable();
 	}
 
 	/**
@@ -38,7 +38,7 @@ public class Shooter {
 	 * 
 	 * @return boolean - is shooter loaded
 	 */
-	public static boolean loadShooterWithPIDs() {
+	public static boolean loadShooterWithoutPIDs() {
 		boolean isShooterLoaded = false;
 		double loadSpeed = 1;
 		if (Sensors.getIntakeArmPhotoEye().get()) {
@@ -64,7 +64,7 @@ public class Shooter {
 	 * 
 	 * @return boolean - is shooter loaded
 	 */
-	public static boolean loadShooterNoPIDs() {
+	public static boolean loadShooterWithPIDs() {
 		boolean isShooterLoaded = false;
 		double loadSpeed = 1;
 		// TODO: Calibrate Tolerance
@@ -94,8 +94,8 @@ public class Shooter {
 	 * @return boolean - did robot shoot
 	 */
 	public static boolean shoot(boolean shouldShoot) {
-		double speed = Actuators.MAX_MOTOR_SPEED;
-		boolean isLoaded = Sensors.getCatapultLimitSwitch().get();
+		double speed = -Actuators.MAX_MOTOR_SPEED;
+		boolean isLoaded = !Sensors.getCatapultLimitSwitch().get();
 		if (shouldShoot && isLoaded) {
 			Actuators.getCatapultMotor().set(speed);
 		} else if (!isLoaded) {

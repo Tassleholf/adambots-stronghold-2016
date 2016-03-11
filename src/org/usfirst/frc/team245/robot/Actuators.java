@@ -33,14 +33,14 @@ public class Actuators {
 	private static final int CODES_PER_REV = (int) (630);//620
 	
 	//The PID constants for right drive motors
-	private static final double RIGHT_DRIVE_KP = 2;
+	private static final double RIGHT_DRIVE_KP = 1;
 	private static final double RIGHT_DRIVE_KI = 0;
 	private static final double RIGHT_DRIVE_KD = 0.025;
-	private static final boolean RIGHT_DRIVE_REVERSE_SENSOR = true;
+	private static final boolean RIGHT_DRIVE_REVERSE_SENSOR = false; //ADAMBOTS ONLY
 	
 	
 	//The PID constants for left drive motors
-	private static final double LEFT_DRIVE_KP = 2;
+	private static final double LEFT_DRIVE_KP = 1;
 	private static final double LEFT_DRIVE_KI = 0;
 	private static final double LEFT_DRIVE_KD = 0.025;
 	private static final boolean LEFT_DRIVE_REVERSE_SENSOR = true;
@@ -70,12 +70,13 @@ public class Actuators {
 	private static Solenoid driveShiftPneumatic;
 
 	private static Solenoid winchRatchetPneumatic;
+	
+	private static Solenoid ringLight;
 
 	/**
 	 * Initializes all actuators
 	 */
 	public static void init() {
-		// TODO: Change ID's
 		// Motors
 		rightDriveMotor = new CANTalon(2);
 		rightDriveMotor = initCANTalon(rightDriveMotor, FeedbackDevice.QuadEncoder, RIGHT_DRIVE_REVERSE_SENSOR, 
@@ -95,23 +96,23 @@ public class Actuators {
 		leftDriveMotor2.setInverted(true);
 		leftDriveMotor2.set(leftDriveMotor.getDeviceID());
 
-		armWinchMotor1 = new VictorSP(12);
-		armWinchMotor2 = new VictorSP(13);
+		armWinchMotor1 = new VictorSP(1);
+		armWinchMotor2 = new VictorSP(0);
 		armWinchMotor2.setInverted(true);
 
 		armAngleMotor = new CANTalon(4);
 		armAngleMotor = initCANTalon(armAngleMotor, FeedbackDevice.AnalogPot, ARM_REVERSE_SENSOR, 
 				ARM_POT_TURNS_PER_REV, ARM_ACCEPTABLE_EROR, ARM_ANGLE_KP, ARM_ANGLE_KI, ARM_ANGLE_KD);
 		//TODO: Use string pot with CANTalon
-		
 
-		boulderIntakeMotor = new VictorSP(4);
+		boulderIntakeMotor = new VictorSP(2);
 
-		catapultMotor = new VictorSP(14);
+		catapultMotor = new VictorSP(3);
 
 		// Solenoids
 		driveShiftPneumatic = new Solenoid(0);
 		winchRatchetPneumatic = new Solenoid(1);
+//		ringLight = new Solenoid(-1);
 	}
 	
 	/**
@@ -195,6 +196,13 @@ public class Actuators {
 
 	public static Solenoid getWinchRatchetPneumatic() {
 		return winchRatchetPneumatic;
+	}
+	
+	/**
+	 * @return the ringLight
+	 */
+	public static Solenoid getRingLight() {
+		return ringLight;
 	}
 
 	private static CANTalon initCANTalon(CANTalon talon, FeedbackDevice device, boolean reverseSensor, int codesPerRev, int acceptableErr, 
